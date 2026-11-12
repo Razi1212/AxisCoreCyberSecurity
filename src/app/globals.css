@@ -18,6 +18,7 @@
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 85px;
 }
 
 body {
@@ -32,7 +33,14 @@ a {
   text-decoration: none;
 }
 
-/* NAVBAR */
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* =========================
+   NAVBAR
+========================= */
 
 .navbar {
   height: 86px;
@@ -44,6 +52,7 @@ a {
   position: relative;
   z-index: 20;
   border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+  backdrop-filter: blur(15px);
 }
 
 .brand {
@@ -66,11 +75,18 @@ a {
   place-items: center;
   font-size: 21px;
   font-weight: 800;
+  box-shadow: 0 5px 15px rgba(215, 25, 32, 0.17);
+}
+
+.brand-name {
+  font-weight: 800;
+  letter-spacing: 1.5px;
 }
 
 .brand-light {
   color: var(--red);
-  font-weight: 500;
+  font-weight: 400;
+  letter-spacing: 2px;
 }
 
 .nav-links {
@@ -103,44 +119,73 @@ a {
 
 .nav-cta:hover {
   background: var(--red);
+  transform: translateY(-2px);
 }
 
 .nav-cta span {
   margin-left: 9px;
 }
 
-/* HERO */
+/* =========================
+   HERO
+========================= */
 
 .hero {
   position: relative;
   min-height: 720px;
   padding: 75px 8% 45px;
   background:
-    radial-gradient(ellipse at 80% 48%, rgba(255, 224, 227, .5), transparent 45%),
-    linear-gradient(115deg, #fff 0%, #fffafa 52%, #fff1f2 100%);
+    radial-gradient(
+      ellipse at 80% 48%,
+      rgba(255, 224, 227, .5),
+      transparent 45%
+    ),
+    linear-gradient(
+      115deg,
+      #fff 0%,
+      #fffafa 52%,
+      #fff1f2 100%
+    );
   overflow: hidden;
   isolation: isolate;
 }
+
+/* Neural network canvas */
 
 .neural-canvas {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
-  z-index: -1;
+  display: block;
+  z-index: 0;
   opacity: 1;
   pointer-events: none;
 }
 
+/* Background grid */
+
 .hero-grid {
   position: absolute;
   inset: 0;
-  z-index: -2;
+  z-index: 0;
+  pointer-events: none;
+
   background-image:
-    linear-gradient(rgba(115, 12, 25, .06) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(115, 12, 25, .06) 1px, transparent 1px);
+    linear-gradient(
+      rgba(115, 12, 25, .10) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(115, 12, 25, .10) 1px,
+      transparent 1px
+    );
+
   background-size: 55px 55px;
 }
+
+/* Hero glow */
 
 .hero-glow {
   position: absolute;
@@ -149,11 +194,19 @@ a {
   right: 3%;
   top: 5%;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(215,25,32,.09), transparent 68%);
+
+  background: radial-gradient(
+    circle,
+    rgba(215, 25, 32, .09),
+    transparent 68%
+  );
+
   filter: blur(25px);
-  z-index: -2;
+  z-index: 0;
   pointer-events: none;
 }
+
+/* Background typography */
 
 .hero-bg-text {
   position: absolute;
@@ -164,9 +217,12 @@ a {
   font-weight: 800;
   letter-spacing: -20px;
   color: rgba(150, 10, 25, .035);
-  z-index: -2;
+  z-index: 0;
   pointer-events: none;
+  white-space: nowrap;
 }
+
+/* Hero content */
 
 .hero-container {
   max-width: 1450px;
@@ -176,6 +232,7 @@ a {
   align-items: center;
   gap: 35px;
   position: relative;
+  z-index: 2;
 }
 
 .hero-content {
@@ -247,13 +304,14 @@ a {
   font-size: 12px;
   font-weight: 700;
   border-radius: 5px;
-  box-shadow: 0 10px 25px rgba(215,25,32,.16);
+  box-shadow: 0 10px 25px rgba(215, 25, 32, .16);
   transition: .25s ease;
 }
 
 .primary-btn:hover {
   background: var(--red-dark);
   transform: translateY(-2px);
+  box-shadow: 0 14px 30px rgba(215, 25, 32, .22);
 }
 
 .primary-btn span {
@@ -337,7 +395,9 @@ a {
   letter-spacing: 1px;
 }
 
-/* STATIC CYBER RADAR */
+/* =========================
+   CYBER RADAR
+========================= */
 
 .hero-visual {
   height: 520px;
@@ -345,6 +405,7 @@ a {
   align-items: center;
   justify-content: center;
   position: relative;
+  z-index: 2;
 }
 
 .radar-display {
@@ -353,14 +414,18 @@ a {
   border-radius: 50%;
   position: relative;
   overflow: hidden;
+
   background: radial-gradient(
     circle,
     #fff 0%,
     #fff8f8 65%,
     #ffeded 100%
   );
+
   border: 1px solid rgba(145, 20, 35, .2);
-  box-shadow: 0 20px 70px rgba(130, 15, 30, .08);
+  box-shadow:
+    0 20px 70px rgba(130, 15, 30, .08),
+    inset 0 0 40px rgba(215, 25, 32, .035);
 }
 
 .radar-ring {
@@ -447,6 +512,7 @@ a {
   height: 7px;
   border-radius: 50%;
   background: #d71920;
+  box-shadow: 0 0 10px rgba(215, 25, 32, .45);
 }
 
 .blip-one {
@@ -509,6 +575,8 @@ a {
   font-weight: 700;
   letter-spacing: 1.5px;
   color: #8c828b;
+  position: relative;
+  z-index: 2;
 }
 
 .bottom-line {
@@ -518,7 +586,9 @@ a {
   margin: 0 25px;
 }
 
-/* ABOUT */
+/* =========================
+   ABOUT
+========================= */
 
 .section-padding {
   padding: 110px 8%;
@@ -555,13 +625,20 @@ a {
   color: var(--red);
   font-size: 12px;
   font-weight: 800;
+  transition: color .2s ease;
 }
 
 .text-link span {
   margin-left: 10px;
 }
 
-/* SERVICES */
+.text-link:hover {
+  color: var(--red-dark);
+}
+
+/* =========================
+   SERVICES
+========================= */
 
 .services-section {
   background: #fff7f8;
@@ -643,13 +720,20 @@ a {
   font-size: 11px;
   font-weight: 800;
   color: var(--red);
+  transition: color .2s ease;
 }
 
 .service-card a span {
   margin-left: 7px;
 }
 
-/* CONTACT */
+.service-card a:hover {
+  color: var(--red-dark);
+}
+
+/* =========================
+   CONTACT
+========================= */
 
 .contact-section {
   background: white;
@@ -662,6 +746,7 @@ a {
   background: #211a20;
   border-radius: 12px;
   color: white;
+  isolation: isolate;
 }
 
 .contact-panel .section-label {
@@ -697,9 +782,12 @@ a {
   color: rgba(255, 255, 255, .035);
   letter-spacing: -15px;
   pointer-events: none;
+  z-index: 0;
 }
 
-/* FOOTER */
+/* =========================
+   FOOTER
+========================= */
 
 .footer {
   min-height: 95px;
@@ -730,9 +818,16 @@ a {
   font-size: 11px;
   font-weight: 700;
   color: var(--red);
+  transition: color .2s ease;
 }
 
-/* RESPONSIVE */
+.back-top:hover {
+  color: var(--red-dark);
+}
+
+/* =========================
+   TABLET
+========================= */
 
 @media (max-width: 1050px) {
   .hero {
@@ -757,11 +852,32 @@ a {
     padding-left: 5%;
     padding-right: 5%;
   }
+
+  .hero-visual {
+    height: 450px;
+  }
+
+  .radar-display {
+    width: min(350px, 90%);
+  }
+
+  .services-grid {
+    gap: 15px;
+  }
+
+  .service-card {
+    padding: 24px;
+  }
 }
+
+/* =========================
+   MOBILE
+========================= */
 
 @media (max-width: 760px) {
   .navbar {
     height: 72px;
+    padding: 0 6%;
   }
 
   .nav-links {
@@ -772,61 +888,188 @@ a {
     font-size: 20px;
   }
 
+  .brand-symbol {
+    height: 32px;
+    width: 32px;
+    font-size: 19px;
+  }
+
   .hero {
+    min-height: auto;
     padding: 65px 6% 35px;
+
+    background:
+      radial-gradient(
+        ellipse at 80% 50%,
+        rgba(255, 224, 227, .48),
+        transparent 55%
+      ),
+      linear-gradient(
+        115deg,
+        #fff 0%,
+        #fffafa 52%,
+        #fff1f2 100%
+      );
+  }
+
+  .neural-canvas {
+    opacity: 1;
+  }
+
+  .hero-grid {
+    background-size: 42px 42px;
+
+    background-image:
+      linear-gradient(
+        rgba(115, 12, 25, .12) 1px,
+        transparent 1px
+      ),
+      linear-gradient(
+        90deg,
+        rgba(115, 12, 25, .12) 1px,
+        transparent 1px
+      );
+  }
+
+  .hero-glow {
+    width: 350px;
+    height: 350px;
+    right: -100px;
+    top: 20%;
+    opacity: .8;
+  }
+
+  .hero-bg-text {
+    font-size: 145px;
+    right: -15px;
+    bottom: 20px;
+    letter-spacing: -9px;
   }
 
   .hero-container {
     grid-template-columns: 1fr;
+    gap: 10px;
   }
 
   .hero h1 {
     font-size: clamp(44px, 10vw, 62px);
     letter-spacing: -2.5px;
+    line-height: 1.08;
+  }
+
+  .eyebrow {
+    margin-bottom: 20px;
   }
 
   .hero-description {
     font-size: 13px;
+    line-height: 1.85;
+    margin-top: 20px;
+  }
+
+  .hero-actions {
+    gap: 20px;
+    margin-top: 27px;
+  }
+
+  .hero-trust {
+    margin-top: 35px;
+  }
+
+  .hero-features {
+    gap: 22px;
+    margin-top: 35px;
+    padding-top: 20px;
   }
 
   .hero-visual {
-    height: 450px;
-    margin-top: 25px;
+    height: 430px;
+    margin-top: 15px;
   }
 
   .radar-display {
-    width: min(350px, 80vw);
+    width: min(350px, 82vw);
+  }
+
+  .radar-coordinate {
+    right: 0;
+    bottom: 8px;
+    font-size: 7px;
+  }
+
+  .hero-bottom {
+    margin-top: 15px;
+    font-size: 8px;
+    letter-spacing: 1px;
+  }
+
+  .bottom-line {
+    margin: 0 12px;
   }
 
   .section-padding {
     padding: 75px 6%;
   }
 
-  .about-grid,
-  .services-heading {
+  .about-grid {
     grid-template-columns: 1fr;
-    display: grid;
     gap: 25px;
+  }
+
+  .about-grid h2,
+  .services-heading h2,
+  .contact-panel h2 {
+    font-size: clamp(34px, 8vw, 48px);
+  }
+
+  .services-heading {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+    margin-bottom: 35px;
   }
 
   .services-grid {
     grid-template-columns: 1fr;
+    gap: 17px;
   }
 
   .service-card {
     min-height: 250px;
+    padding: 27px;
+  }
+
+  .service-card h3 {
+    margin-top: 25px;
   }
 
   .contact-panel {
     padding: 55px 7%;
+    border-radius: 9px;
+  }
+
+  .contact-panel p {
+    font-size: 12px;
+  }
+
+  .contact-decoration {
+    font-size: 120px;
+    right: -10px;
+    bottom: -30px;
+    letter-spacing: -8px;
   }
 
   .footer {
     flex-wrap: wrap;
     justify-content: center;
     text-align: center;
+    padding: 25px 6%;
   }
 }
+
+/* =========================
+   SMALL MOBILE
+========================= */
 
 @media (max-width: 420px) {
   .nav-cta {
@@ -834,9 +1077,23 @@ a {
     font-size: 10px;
   }
 
+  .hero {
+    padding-top: 55px;
+  }
+
+  .hero h1 {
+    font-size: 43px;
+    letter-spacing: -2px;
+  }
+
   .hero-actions {
     gap: 16px;
     flex-wrap: wrap;
+  }
+
+  .primary-btn {
+    padding: 14px 17px;
+    gap: 15px;
   }
 
   .hero-features {
@@ -848,9 +1105,34 @@ a {
   }
 
   .hero-visual {
-    height: 380px;
+    height: 370px;
+  }
+
+  .radar-display {
+    width: min(310px, 82vw);
+  }
+
+  .radar-label {
+    font-size: 7px;
+    letter-spacing: 1.3px;
+  }
+
+  .hero-bottom {
+    font-size: 7px;
+  }
+
+  .section-padding {
+    padding: 65px 6%;
+  }
+
+  .service-card {
+    padding: 23px;
   }
 }
+
+/* =========================
+   REDUCED MOTION
+========================= */
 
 @media (prefers-reduced-motion: reduce) {
   *,
@@ -859,5 +1141,6 @@ a {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
   }
 }

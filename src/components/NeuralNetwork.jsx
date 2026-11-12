@@ -15,7 +15,7 @@ export default function NeuralNetwork() {
     let nodes = [];
     let pulses = [];
     let animationFrame;
-    let time = 0;
+    let lastTime = 0;
 
     const NODE_COUNT = 65;
     const CONNECTION_DISTANCE = 165;
@@ -26,8 +26,8 @@ export default function NeuralNetwork() {
       width = canvas.clientWidth;
       height = canvas.clientHeight;
 
-      canvas.width = width * dpr;
-      canvas.height = height * dpr;
+      canvas.width = Math.round(width * dpr);
+      canvas.height = Math.round(height * dpr);
 
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
@@ -39,13 +39,13 @@ export default function NeuralNetwork() {
         radius: Math.random() * 1.8 + 1,
         phase: Math.random() * Math.PI * 2,
         pulseSpeed: Math.random() * 0.025 + 0.008,
-        energy: Math.random(),
         id: i,
       }));
 
       pulses = [];
     }
 
+    // Background glow
     function drawBackgroundGlow() {
       const glow = ctx.createRadialGradient(
         width * 0.52,
@@ -53,30 +53,31 @@ export default function NeuralNetwork() {
         0,
         width * 0.52,
         height * 0.48,
-        Math.max(width, height) * 0.55
+        Math.max(width, height) * 0.65
       );
 
       glow.addColorStop(0, "rgba(215, 25, 32, 0.09)");
-      glow.addColorStop(0.5, "rgba(215, 25, 32, 0.025)");
+      glow.addColorStop(0.5, "rgba(215, 25, 32, 0.035)");
       glow.addColorStop(1, "rgba(255, 255, 255, 0)");
 
       ctx.fillStyle = glow;
       ctx.fillRect(0, 0, width, height);
     }
 
+    // Darker crimson grid - consistent across devices
     function drawGrid() {
       const spacing = 42;
 
       ctx.beginPath();
-      ctx.strokeStyle = "rgba(145, 20, 35, 0.055)";
-      ctx.lineWidth = 0.6;
+      ctx.strokeStyle = "rgba(145, 20, 35, 0.12)";
+      ctx.lineWidth = 0.8;
 
-      for (let x = 0; x < width; x += spacing) {
+      for (let x = 0; x <= width; x += spacing) {
         ctx.moveTo(x, 0);
         ctx.lineTo(x, height);
       }
 
-      for (let y = 0; y < height; y += spacing) {
+      for (let y = 0; y <= height; y += spacing) {
         ctx.moveTo(0, y);
         ctx.lineTo(width, y);
       }
@@ -84,12 +85,15 @@ export default function NeuralNetwork() {
       ctx.stroke();
     }
 
-    function updateNodes() {
-      nodes.forEach((node) => {
-        node.x += node.vx;
-        node.y += node.vy;
+    // Update network nodes
+    function updateNodes(delta) {
+      const speed = Math.min(delta / 16.67, 2);
 
-        node.phase += node.pulseSpeed;
+      nodes.forEach((node) => {
+        node.x += node.vx * speed;
+        node.y += node.vy * speed;
+
+        node.phase += node.pulseSpeed * speed;
 
         if (node.x < 0 || node.x > width) {
           node.vx *= -1;
@@ -103,6 +107,7 @@ export default function NeuralNetwork() {
       });
     }
 
+    // Draw connections
     function drawConnections() {
       const connections = [];
 
@@ -118,7 +123,7 @@ export default function NeuralNetwork() {
 
           if (distance < CONNECTION_DISTANCE) {
             const opacity =
-              (1 - distance / CONNECTION_DISTANCE) * 0.3;
+              (1 - distance / CONNECTION_DISTANCE) * 0.34;
 
             ctx.beginPath();
             ctx.moveTo(node.x, node.y);
@@ -133,8 +138,6 @@ export default function NeuralNetwork() {
               y1: node.y,
               x2: other.x,
               y2: other.y,
-              opacity,
-              distance,
             });
           }
         }
@@ -143,6 +146,7 @@ export default function NeuralNetwork() {
       return connections;
     }
 
+    // Create travelling signals
     function createPulse(connections) {
       if (connections.length === 0 || Math.random() > 0.035) {
         return;
@@ -161,11 +165,14 @@ export default function NeuralNetwork() {
       });
     }
 
-    function drawPulses() {
+    // Animate signals
+    function drawPulses(delta) {
+      const speed = Math.min(delta / 16.67, 2);
+
       pulses = pulses.filter((pulse) => pulse.progress < 1);
 
       pulses.forEach((pulse) => {
-        pulse.progress += pulse.speed;
+        pulse.progress += pulse.speed * speed;
 
         const x =
           pulse.x1 + (pulse.x2 - pulse.x1) * pulse.progress;
@@ -186,20 +193,22 @@ export default function NeuralNetwork() {
 
         ctx.beginPath();
         ctx.arc(x, y, 2.2, 0, Math.PI * 2);
+
         ctx.fillStyle = "#d71920";
         ctx.shadowBlur = 12;
         ctx.shadowColor = "#d71920";
         ctx.fill();
+
         ctx.shadowBlur = 0;
       });
     }
 
+    // Glowing network nodes
     function drawNodes() {
       nodes.forEach((node) => {
         const pulse = (Math.sin(node.phase) + 1) / 2;
         const radius = node.radius + pulse * 0.8;
 
-        // Outer glow
         const glow = ctx.createRadialGradient(
           node.x,
           node.y,
@@ -209,7 +218,7 @@ export default function NeuralNetwork() {
           radius * 8
         );
 
-        glow.addColorStop(0, "rgba(215, 25, 32, 0.24)");
+        glow.addColorStop(0, "rgba(215, 25, 32, 0.3)");
         glow.addColorStop(1, "rgba(215, 25, 32, 0)");
 
         ctx.beginPath();
@@ -217,46 +226,52 @@ export default function NeuralNetwork() {
         ctx.fillStyle = glow;
         ctx.fill();
 
-        // Node center
         ctx.beginPath();
         ctx.arc(node.x, node.y, radius, 0, Math.PI * 2);
 
-        ctx.fillStyle = `rgba(145, 20, 35, ${0.45 + pulse * 0.45})`;
+        ctx.fillStyle = `rgba(145, 20, 35, ${0.55 + pulse * 0.4})`;
 
         ctx.shadowBlur = 7 + pulse * 7;
-        ctx.shadowColor = "rgba(215, 25, 32, 0.6)";
+        ctx.shadowColor = "#d71920";
         ctx.fill();
+
         ctx.shadowBlur = 0;
       });
     }
 
-    function draw() {
-      time += 0.01;
+    // Main animation loop
+    function draw(timestamp = 0) {
+      const delta = lastTime ? timestamp - lastTime : 16.67;
+      lastTime = timestamp;
 
       ctx.clearRect(0, 0, width, height);
 
       drawBackgroundGlow();
       drawGrid();
 
-      updateNodes();
+      updateNodes(delta);
 
       const connections = drawConnections();
 
       createPulse(connections);
-      drawPulses();
+      drawPulses(delta);
       drawNodes();
 
       animationFrame = requestAnimationFrame(draw);
     }
 
     resize();
-    draw();
+    animationFrame = requestAnimationFrame(draw);
 
-    window.addEventListener("resize", resize);
+    const resizeObserver = new ResizeObserver(() => {
+      resize();
+    });
+
+    resizeObserver.observe(canvas);
 
     return () => {
       cancelAnimationFrame(animationFrame);
-      window.removeEventListener("resize", resize);
+      resizeObserver.disconnect();
     };
   }, []);
 
