@@ -1,5 +1,6 @@
 
 import NeuralNetwork from "../components/NeuralNetwork";
+import Navbar from "../components/Navbar";
 
 const services = [
   {
@@ -29,23 +30,7 @@ export default function Home() {
   return (
     <main>
       {/* NAVIGATION */}
-      <header className="navbar">
-        <a href="#home" className="brand">
-          <span className="brand-symbol">A</span>
-          <span className="brand-name">AXIS<span className="brand-light">CORE</span></span>
-        </a>
-
-        <nav className="nav-links">
-          <a href="#home" className="active">Home</a>
-          <a href="#about">About</a>
-          <a href="#services">Services</a>
-          <a href="#contact">Contact</a>
-        </nav>
-
-        <a href="#contact" className="nav-cta">
-          Let's Talk <span>↗</span>
-        </a>
-      </header>
+      <Navbar />
 
       {/* HERO */}
       <section className="hero" id="home">
@@ -263,6 +248,7 @@ export default function Home() {
           Back to top ↑
         </a>
       </footer>
+      
     </main>
   );
 }

@@ -1,0 +1,12 @@
+
+import Navbar from "../../components/Navbar";
+import Contact from "../../components/Contact";
+
+export default function Contacts() {
+  return (
+    <>
+      <Navbar />
+      <Contact />
+    </>
+  );
+}

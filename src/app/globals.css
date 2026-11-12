@@ -39,75 +39,81 @@ a {
 }
 
 /* =========================
-   NAVBAR
+   AXISCORE NAVBAR
 ========================= */
 
 .navbar {
   height: 86px;
   padding: 0 8%;
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background: rgba(255, 255, 255, 0.97);
+  flex-direction: column;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.92);
   position: relative;
-  z-index: 20;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.04);
-  backdrop-filter: blur(15px);
+  z-index: 100;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  backdrop-filter: blur(18px);
 }
 
-.brand {
+.navbar-container {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.navbar-brand {
   display: flex;
   align-items: center;
   gap: 11px;
   font-family: "Outfit", sans-serif;
-  font-size: 23px;
-  font-weight: 700;
-  letter-spacing: -1px;
 }
 
-.brand-symbol {
-  height: 35px;
-  width: 35px;
-  background: var(--red);
-  color: white;
-  border-radius: 10px;
+.navbar-logo {
+  width: 36px;
+  height: 36px;
   display: grid;
   place-items: center;
+  background: var(--red);
+  color: white;
+  border-radius: 9px;
   font-size: 21px;
   font-weight: 800;
-  box-shadow: 0 5px 15px rgba(215, 25, 32, 0.17);
 }
 
-.brand-name {
+.navbar-brand-name {
+  font-size: 22px;
   font-weight: 800;
   letter-spacing: 1.5px;
 }
 
-.brand-light {
+.navbar-brand-name span {
   color: var(--red);
   font-weight: 400;
-  letter-spacing: 2px;
 }
 
-.nav-links {
+.navbar-links {
   display: flex;
   align-items: center;
   gap: 38px;
 }
 
-.nav-links a {
+.navbar-link {
   font-size: 13px;
   font-weight: 600;
   color: #6e6870;
   transition: color .25s ease;
 }
 
-.nav-links a:hover,
-.nav-links a.active {
+.navbar-link:hover {
   color: var(--red);
 }
 
-.nav-cta {
+.navbar-cta,
+.mobile-nav-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
   background: var(--dark);
   color: white;
   padding: 13px 21px;
@@ -117,13 +123,78 @@ a {
   transition: .25s ease;
 }
 
-.nav-cta:hover {
+.navbar-cta:hover,
+.mobile-nav-cta:hover {
   background: var(--red);
   transform: translateY(-2px);
 }
 
-.nav-cta span {
-  margin-left: 9px;
+.navbar-menu-button {
+  display: none;
+  background: none;
+  border: none;
+  color: var(--dark);
+  cursor: pointer;
+}
+
+.mobile-nav {
+  display: none;
+}
+
+@media (max-width: 760px) {
+  .navbar {
+    height: 72px;
+    padding: 0 6%;
+  }
+
+  .navbar-links,
+  .navbar-cta {
+    display: none;
+  }
+
+  .navbar-menu-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .mobile-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    padding: 0 6%;
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    background: white;
+    border-bottom: 1px solid var(--border);
+    transition: max-height .3s ease, opacity .3s ease, padding .3s ease;
+  }
+
+  .mobile-nav-open {
+    max-height: 350px;
+    padding: 24px 6%;
+    opacity: 1;
+  }
+
+  .mobile-nav-link {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--dark);
+  }
+
+  .mobile-nav-link:hover {
+    color: var(--red);
+  }
+
+  .mobile-nav-cta {
+    justify-content: center;
+    width: fit-content;
+  }
 }
 
 /* =========================
