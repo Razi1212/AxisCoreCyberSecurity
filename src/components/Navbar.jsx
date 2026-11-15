@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState } from "react";
@@ -5,21 +6,23 @@ import Link from "next/link";
 import { Menu, X, ArrowUpRight } from "lucide-react";
 
 const navLinks = [
-  { name: "Home", href: "#home" },
-  { name: "About us", href: "#about" },
-  { name: "Services", href: "#services" },
+  { name: "Home", href: "/" },
+  { name: "About us", href: "/aboutus" },
+  { name: "Services", href: "/services" },
   { name: "Contact us", href: "/contact" },
 ];
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
 
+  const closeMenu = () => setMenuOpen(false);
+
   return (
     <header className="navbar">
       <div className="navbar-container">
 
         {/* BRAND */}
-        <Link href="#home" className="navbar-brand">
+        <Link href="/" className="navbar-brand" onClick={closeMenu}>
           <span className="navbar-logo">A</span>
           <span className="navbar-brand-name">
             AXI<span>SCORE</span>
@@ -40,7 +43,7 @@ export default function Navbar() {
         </nav>
 
         {/* DESKTOP CTA */}
-        <Link href="#contact" className="navbar-cta">
+        <Link href="/contact" className="navbar-cta">
           Let's Talk
           <ArrowUpRight size={16} />
         </Link>
@@ -48,13 +51,12 @@ export default function Navbar() {
         {/* MOBILE MENU BUTTON */}
         <button
           className="navbar-menu-button"
-          onClick={() => setMenuOpen(!menuOpen)}
+          onClick={() => setMenuOpen((open) => !open)}
           aria-label={menuOpen ? "Close menu" : "Open menu"}
           aria-expanded={menuOpen}
         >
           {menuOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
-
       </div>
 
       {/* MOBILE NAVIGATION */}
@@ -64,16 +66,16 @@ export default function Navbar() {
             key={link.name}
             href={link.href}
             className="mobile-nav-link"
-            onClick={() => setMenuOpen(false)}
+            onClick={closeMenu}
           >
             {link.name}
           </Link>
         ))}
 
         <Link
-          href="#contact"
+          href="/contact"
           className="mobile-nav-cta"
-          onClick={() => setMenuOpen(false)}
+          onClick={closeMenu}
         >
           Let's Talk <ArrowUpRight size={16} />
         </Link>

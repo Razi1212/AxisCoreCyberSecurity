@@ -1,6 +1,6 @@
-
 "use client";
 
+import { useState } from "react";
 import "./Contactus.css";
 
 import {
@@ -9,275 +9,463 @@ import {
   ShieldCheck,
   LockKeyhole,
   Send,
-  Fingerprint,
+  Building2,
+  CheckCircle2,
+  Globe,
+  Radar,
+  Network,
+  Activity,
+  Phone,
+  MapPin,
 } from "lucide-react";
 
-export default function ContactPage() {
+export default function Contact() {
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    company: "",
+    service: "",
+    message: "",
+  });
+
+  const [submitted, setSubmitted] = useState(false);
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+    setSubmitted(false);
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const formData = new FormData(e.currentTarget);
-
-    const name = formData.get("name");
-    const email = formData.get("email");
-    const company = formData.get("company");
-    const service = formData.get("service");
-    const message = formData.get("message");
-
     const subject = encodeURIComponent(
-      `AXISCORE Inquiry - ${service}`
+      `AXISCORE Inquiry - ${formData.service || "General Inquiry"}`
     );
 
     const body = encodeURIComponent(
-      `Name: ${name}\n` +
-      `Email: ${email}\n` +
-      `Company: ${company}\n` +
-      `Service: ${service}\n\n` +
-      `Message:\n${message}`
+      `Name: ${formData.name}
+Email: ${formData.email}
+Company: ${formData.company}
+Service: ${formData.service}
+
+Project Details:
+${formData.message}`
     );
 
     window.location.href =
       `mailto:hello@axiscore.com?subject=${subject}&body=${body}`;
+
+    setSubmitted(true);
   };
 
   return (
     <main className="contact-page">
 
-      {/* SCANNING BACKGROUND */}
-      <div className="contact-data-layer">
-        <div className="contact-data-scanner" />
-      </div>
+      {/* HERO SECTION */}
+      <section className="contact-hero">
 
-      {/* MAIN CONTENT */}
-      <section className="contact-layout">
+        <div className="contact-page-grid"></div>
+        <div className="contact-page-glow"></div>
 
-        {/* LEFT CONTENT */}
-        <div className="contact-left">
-
-          <div className="contact-brand">
-            AXISCORE<span>.</span>
-          </div>
+        <div className="contact-hero-content">
 
           <div className="contact-eyebrow">
-            <span className="contact-status-dot" />
-            SECURE COMMUNICATION CHANNEL
+            <span className="eyebrow-line"></span>
+            <span>CONNECT WITH AXISCORE</span>
           </div>
 
           <h1>
-            Let's talk
-            <span> security.</span>
+            Your Security.
+            <br />
+            <span>Our Priority.</span>
           </h1>
 
-          <p className="contact-description">
-            Every strong security strategy starts with a conversation.
-            Tell us about your challenges, and let's build something
-            more secure together.
+          <p className="contact-hero-description">
+            Stronger security starts with the right conversation.
+            Connect with our team to explore intelligent cybersecurity
+            solutions designed to protect your business.
           </p>
 
-          <div className="contact-divider" />
+          <div className="contact-hero-buttons">
+            <a href="#inquiry" className="contact-primary-btn">
+              Start a Conversation
+              <ArrowUpRight size={18} />
+            </a>
 
-          <div className="contact-details">
-
-            <div className="contact-detail-item">
-              <div className="contact-detail-icon">
-                <Mail size={19} />
-              </div>
-
-              <div>
-                <span>EMAIL US</span>
-                <a href="mailto:hello@axiscore.com">
-                  hello@axiscore.com
-                </a>
-              </div>
-            </div>
-
-            <div className="contact-detail-item">
-              <div className="contact-detail-icon">
-                <ShieldCheck size={19} />
-              </div>
-
-              <div>
-                <span>OUR APPROACH</span>
-                <p>Security-first. Always.</p>
-              </div>
-            </div>
-
-            <div className="contact-detail-item">
-              <div className="contact-detail-icon">
-                <LockKeyhole size={19} />
-              </div>
-
-              <div>
-                <span>YOUR PRIVACY</span>
-                <p>Your information stays protected.</p>
-              </div>
-            </div>
-
+            <a href="#contact-details" className="contact-secondary-btn">
+              Contact Information
+            </a>
           </div>
 
-          <div className="contact-left-footer">
-            <Fingerprint size={18} />
-            <span>YOUR SECURITY IS OUR PRIORITY</span>
+          <div className="contact-trust-stats">
+
+            <div>
+              <ShieldCheck size={21} />
+              <span>Security First</span>
+            </div>
+
+            <div>
+              <LockKeyhole size={21} />
+              <span>Confidential Approach</span>
+            </div>
+
+            <div>
+              <Activity size={21} />
+              <span>Intelligent Protection</span>
+            </div>
+
           </div>
 
         </div>
 
-        {/* HIGHLIGHTED CONTACT FORM */}
-        <div className="contact-right">
+        {/* CYBERSECURITY VISUAL */}
+        <div className="contact-hero-visual">
 
-          <div className="contact-form-top">
+          <div className="cyber-orbit orbit-one"></div>
+          <div className="cyber-orbit orbit-two"></div>
+          <div className="cyber-orbit orbit-three"></div>
 
-            <div className="contact-form-tag">
-              <span className="contact-status-dot" />
-              PROJECT INQUIRY
+          <div className="cyber-core">
+            <div className="cyber-core-inner">
+              <ShieldCheck size={76} strokeWidth={1.2} />
             </div>
-
-            <span className="contact-form-index">
-              AX / 001
-            </span>
-
           </div>
 
-          <div className="contact-form-heading">
-            <h2>
-              Start a conversation<span>.</span>
-            </h2>
-
-            <p>
-              Tell us what you need. Our team will get back to you.
-            </p>
+          <div className="cyber-node node-one">
+            <Radar size={19} />
           </div>
 
-          <form onSubmit={handleSubmit}>
+          <div className="cyber-node node-two">
+            <Network size={19} />
+          </div>
 
-            <div className="contact-form-row">
+          <div className="cyber-node node-three">
+            <LockKeyhole size={19} />
+          </div>
 
-              <div className="contact-field">
-                <label htmlFor="name">FULL NAME *</label>
+          <div className="cyber-floating-label label-one">
+            <span className="status-dot"></span>
+            Secure Infrastructure
+          </div>
 
-                <input
-                  type="text"
-                  id="name"
-                  name="name"
-                  placeholder="Your name"
-                  required
-                />
-              </div>
-
-              <div className="contact-field">
-                <label htmlFor="email">WORK EMAIL *</label>
-
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  placeholder="you@company.com"
-                  required
-                />
-              </div>
-
-            </div>
-
-            <div className="contact-field">
-              <label htmlFor="company">COMPANY</label>
-
-              <input
-                type="text"
-                id="company"
-                name="company"
-                placeholder="Your organization"
-              />
-            </div>
-
-            <div className="contact-field">
-              <label htmlFor="service">
-                WHAT CAN WE HELP WITH? *
-              </label>
-
-              <select
-                id="service"
-                name="service"
-                defaultValue=""
-                required
-              >
-                <option value="" disabled>
-                  Select a service
-                </option>
-
-                <option value="Threat Detection">
-                  Threat Detection
-                </option>
-
-                <option value="Network Security">
-                  Network Security
-                </option>
-
-                <option value="Data Protection">
-                  Data Protection
-                </option>
-
-                <option value="Security Consulting">
-                  Security Consulting
-                </option>
-
-                <option value="Other">
-                  Other
-                </option>
-              </select>
-            </div>
-
-            <div className="contact-field">
-              <label htmlFor="message">PROJECT DETAILS *</label>
-
-              <textarea
-                id="message"
-                name="message"
-                placeholder="Tell us about your security requirements..."
-                rows={5}
-                required
-              />
-            </div>
-
-            <button
-              type="submit"
-              className="contact-submit"
-            >
-              <span>Send Secure Inquiry</span>
-              <Send size={17} />
-            </button>
-
-            <div className="privacy-note">
-              <LockKeyhole size={13} />
-              <span>
-                Your information is handled with confidentiality.
-              </span>
-            </div>
-
-          </form>
-
-          <div className="contact-card-decoration">
-            <span />
-            <span />
-            <span />
+          <div className="cyber-floating-label label-two">
+            <Activity size={15} />
+            Intelligent Defense
           </div>
 
         </div>
 
       </section>
 
-      {/* FOOTER */}
-      <footer className="contact-bottom">
 
-        <div className="contact-bottom-brand">
-          AXISCORE SECURITY
+      {/* CONTACT CONTENT */}
+      <section className="contact-main" id="inquiry">
+
+        <div className="contact-section-heading">
+
+          <div className="contact-eyebrow dark-eyebrow">
+            <span className="eyebrow-line"></span>
+            <span>LET'S WORK TOGETHER</span>
+          </div>
+
+          <h2>
+            Let's secure what
+            <span> matters to you.</span>
+          </h2>
+
+          <p>
+            Tell us about your security goals. Our team is ready
+            to help you move forward with confidence.
+          </p>
+
         </div>
 
-        <p>INTELLIGENCE THAT PROTECTS.</p>
 
-        <a href="/">
-          BACK TO HOME
-          <ArrowUpRight size={15} />
-        </a>
+        <div className="contact-content-grid">
+
+          {/* LEFT CONTACT INFORMATION */}
+          <div className="contact-info" id="contact-details">
+
+            <div className="contact-info-heading">
+              <span className="contact-info-label">GET IN TOUCH</span>
+              <h3>Let's start a conversation.</h3>
+              <p>
+                Have a question or need a cybersecurity solution?
+                Reach out to our team.
+              </p>
+            </div>
+
+
+            <div className="contact-info-card">
+
+              <div className="contact-info-icon">
+                <Mail size={22} />
+              </div>
+
+              <div>
+                <span>Email Us</span>
+                <a href="mailto:hello@axiscore.com">
+                  hello@axiscore.com
+                </a>
+              </div>
+
+              <ArrowUpRight size={18} className="info-arrow" />
+
+            </div>
+
+
+            <div className="contact-info-card">
+
+              <div className="contact-info-icon">
+                <Phone size={22} />
+              </div>
+
+              <div>
+                <span>Call Us</span>
+                <p>Contact number coming soon</p>
+              </div>
+
+            </div>
+
+
+            <div className="contact-info-card">
+
+              <div className="contact-info-icon">
+                <MapPin size={22} />
+              </div>
+
+              <div>
+                <span>Our Location</span>
+                <p>Connect with AXISCORE online</p>
+              </div>
+
+            </div>
+
+
+            {/* SECURITY PANEL */}
+            <div className="contact-security-panel">
+
+              <div className="security-panel-icon">
+                <ShieldCheck size={28} />
+              </div>
+
+              <div>
+                <h4>Your security comes first.</h4>
+                <p>
+                  We approach every conversation with
+                  confidentiality and a security-first mindset.
+                </p>
+              </div>
+
+              <div className="security-panel-glow"></div>
+
+            </div>
+
+          </div>
+
+
+          {/* PREMIUM INQUIRY FORM */}
+          <div className="contact-form-card">
+
+            <div className="form-top-line"></div>
+
+            <div className="contact-form-header">
+
+              <div>
+                <span className="form-label">SECURE INQUIRY</span>
+                <h3>Tell us about your project.</h3>
+                <p>
+                  Complete the details below and let's explore
+                  how we can help.
+                </p>
+              </div>
+
+              <div className="form-send-icon">
+                <ShieldCheck size={27} />
+              </div>
+
+            </div>
+
+
+            <form onSubmit={handleSubmit}>
+
+              <div className="form-row">
+
+                <div className="contact-field">
+                  <label htmlFor="name">FULL NAME *</label>
+
+                  <input
+                    id="name"
+                    type="text"
+                    name="name"
+                    placeholder="Enter your full name"
+                    value={formData.name}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+
+
+                <div className="contact-field">
+                  <label htmlFor="email">BUSINESS EMAIL *</label>
+
+                  <input
+                    id="email"
+                    type="email"
+                    name="email"
+                    placeholder="you@company.com"
+                    value={formData.email}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+
+              </div>
+
+
+              <div className="contact-field">
+                <label htmlFor="company">ORGANIZATION</label>
+
+                <div className="input-with-icon">
+                  <Building2 size={17} />
+
+                  <input
+                    id="company"
+                    type="text"
+                    name="company"
+                    placeholder="Your company name"
+                    value={formData.company}
+                    onChange={handleChange}
+                  />
+                </div>
+              </div>
+
+
+              <div className="contact-field">
+                <label htmlFor="service">WHAT DO YOU NEED? *</label>
+
+                <select
+                  id="service"
+                  name="service"
+                  value={formData.service}
+                  onChange={handleChange}
+                  required
+                >
+                  <option value="">Select a service</option>
+                  <option value="Threat Detection">
+                    Threat Detection
+                  </option>
+                  <option value="Network Security">
+                    Network Security
+                  </option>
+                  <option value="Data Protection">
+                    Data Protection
+                  </option>
+                  <option value="Security Consulting">
+                    Security Consulting
+                  </option>
+                  <option value="Other">
+                    Other
+                  </option>
+                </select>
+              </div>
+
+
+              <div className="contact-field">
+                <label htmlFor="message">PROJECT DETAILS *</label>
+
+                <textarea
+                  id="message"
+                  name="message"
+                  rows="5"
+                  placeholder="Tell us about your project, security requirements or challenges..."
+                  value={formData.message}
+                  onChange={handleChange}
+                  required
+                ></textarea>
+              </div>
+
+
+              <button type="submit" className="contact-submit">
+
+                <span>Submit Secure Inquiry</span>
+                <Send size={18} />
+
+              </button>
+
+
+              {submitted && (
+                <p className="form-success">
+                  <CheckCircle2 size={17} />
+                  Your email application should open with your inquiry.
+                </p>
+              )}
+
+
+              <div className="contact-form-note">
+                <LockKeyhole size={15} />
+                Your information is handled with care.
+              </div>
+
+            </form>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      {/* BOTTOM CTA */}
+      <section className="contact-bottom">
+
+        <div className="bottom-glow"></div>
+
+        <div className="bottom-content">
+
+          <span>READY TO STRENGTHEN YOUR SECURITY?</span>
+
+          <h2>
+            Let's build a more
+            <br />
+            <span>secure future.</span>
+          </h2>
+
+          <p>
+            Take the next step toward smarter, stronger cybersecurity.
+          </p>
+
+          <a href="#inquiry" className="contact-primary-btn">
+            Talk to Our Team
+            <ArrowUpRight size={18} />
+          </a>
+
+        </div>
+
+      </section>
+
+
+      {/* FOOTER */}
+      <footer className="contact-footer">
+
+        <div className="footer-brand">
+          <div className="footer-logo">
+            <ShieldCheck size={25} />
+            <span>AXIS<span>CORE</span></span>
+          </div>
+
+          <p>
+            Intelligent security. Stronger protection.
+            A safer digital future.
+          </p>
+        </div>
+
+        <div className="footer-copy">
+          © {new Date().getFullYear()} AXISCORE. All rights reserved.
+        </div>
 
       </footer>
 
