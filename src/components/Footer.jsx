@@ -82,7 +82,7 @@ export default function Footer() {
 
       <div className="footer-divider" />
 
-      {/* UNIFIED FOOTER CONTENT */}
+      {/* FOOTER CONTENT */}
       <section className="footer-content">
 
         {/* BRAND */}
@@ -104,7 +104,7 @@ export default function Footer() {
             <a
               href="https://www.linkedin.com/"
               target="_blank"
-              rel="noreferrer"
+              rel="noopener noreferrer"
               aria-label="LinkedIn"
             >
               <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -115,7 +115,7 @@ export default function Footer() {
             <a
               href="https://www.instagram.com/"
               target="_blank"
-              rel="noreferrer"
+              rel="noopener noreferrer"
               aria-label="Instagram"
             >
               <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -133,7 +133,7 @@ export default function Footer() {
             <a
               href="https://github.com/"
               target="_blank"
-              rel="noreferrer"
+              rel="noopener noreferrer"
               aria-label="GitHub"
             >
               <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -204,9 +204,15 @@ export default function Footer() {
         </p>
 
         <div className="footer-legal">
-          <Link href="/privacy-policy">Privacy Policy</Link>
+          <Link href="/privacy-policy">
+            Privacy Policy
+          </Link>
+
           <span />
-          <Link href="/terms">Terms &amp; Conditions</Link>
+
+          <Link href="/terms">
+            Terms &amp; Conditions
+          </Link>
         </div>
 
         <a href="#top" className="back-to-top">
