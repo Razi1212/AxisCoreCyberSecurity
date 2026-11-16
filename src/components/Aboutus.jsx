@@ -16,6 +16,7 @@ import {
 
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import AboutUsAnimations from "./AboutUsAnimations";
 import "./Aboutus.css";
 
 const values = [
@@ -66,6 +67,7 @@ export default function AboutUs() {
       <Navbar />
 
       <main className="axis-about-premium">
+        <AboutUsAnimations />
 
         {/* HERO */}
         <section className="ap-hero">
@@ -144,10 +146,7 @@ export default function AboutUs() {
         </section>
 
         {/* STORY */}
-        <section
-          className="ap-intro ap-section"
-          id="our-story"
-        >
+        <section className="ap-intro ap-section" id="our-story">
           <div className="ap-container">
             <div className="ap-section-top">
               <span className="ap-section-number">
@@ -210,7 +209,7 @@ export default function AboutUs() {
           </div>
         </section>
 
-        {/* COLOURFUL BRAND STATEMENT */}
+        {/* BRAND STATEMENT */}
         <section className="ap-statement">
           <div className="ap-statement-shape ap-statement-shape-one" />
           <div className="ap-statement-shape ap-statement-shape-two" />
@@ -421,7 +420,6 @@ export default function AboutUs() {
         {/* PREMIUM COMMITMENT */}
         <section className="ap-commitment ap-section">
           <div className="ap-container">
-
             <div className="ap-section-top">
               <span className="ap-section-number">
                 06 / OUR COMMITMENT
@@ -432,7 +430,6 @@ export default function AboutUs() {
             </div>
 
             <div className="ap-commitment-grid">
-
               <div className="ap-commitment-content">
                 <span className="ap-small-tag ap-tag-blue">
                   BUILT ON PRINCIPLES
@@ -463,7 +460,6 @@ export default function AboutUs() {
               </div>
 
               <div className="ap-commitment-right">
-
                 <div className="ap-commitment-visual">
                   <div className="ap-commitment-orbit ap-commitment-orbit-one" />
                   <div className="ap-commitment-orbit ap-commitment-orbit-two" />
@@ -491,26 +487,10 @@ export default function AboutUs() {
                     </div>
                   ))}
                 </div>
-
               </div>
             </div>
-
-            <div className="ap-about-signoff">
-              <div className="ap-signoff-brand">
-                <span className="ap-signoff-mark">A</span>
-                <span>AXISCORE</span>
-              </div>
-
-              <p>SECURE. INNOVATE. ADVANCE.</p>
-
-              <span className="ap-signoff-year">
-                ESTABLISHED 2026
-              </span>
-            </div>
-
           </div>
         </section>
-
       </main>
 
       <Footer />
