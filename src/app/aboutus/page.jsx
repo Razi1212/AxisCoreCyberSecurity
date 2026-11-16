@@ -1,12 +1,12 @@
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
+import Aboutus from "@/components/Aboutus";
 
-export default function aboutus() {
+export default function about() {
     return (
         <>
-           <Navbar/>
-           <>p</>
-          <Footer/>
+           <Aboutus/>
+          
         </>
     )
 }
