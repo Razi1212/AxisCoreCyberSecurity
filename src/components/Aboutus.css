@@ -1,3 +1,4 @@
+/* Typography is inherited from app/globals.css via --axis-font-* variables. */
 
 /* =========================================================
    AXISCORE — ABOUT US
@@ -5,7 +6,6 @@
    Shared Typography System
 ========================================================= */
 
-@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap");
 
 /* =========================================================
    1. COLOUR & TYPOGRAPHY SYSTEM
@@ -30,19 +30,7 @@
   --ap-soft: #F4F7FB;
   --ap-white: #FFFFFF;
 
-  --ap-font-heading: "Outfit", sans-serif;
-  --ap-font-body: "DM Sans", sans-serif;
 
-  /* Shared website font sizes */
-  --ap-font-hero: clamp(43px, 5vw, 66px);
-  --ap-font-page-title: clamp(38px, 4vw, 52px);
-  --ap-font-section: clamp(29px, 3vw, 40px);
-  --ap-font-card: 21px;
-  --ap-font-subtitle: 18px;
-  --ap-font-body-size: 15px;
-  --ap-font-small: 12px;
-  --ap-font-label: 10px;
-  --ap-font-button: 13px;
 
   --ap-line-heading: 1.15;
   --ap-line-body: 1.85;
@@ -61,8 +49,8 @@
   background: var(--ap-white);
   color: var(--ap-text);
 
-  font-family: var(--ap-font-body);
-  font-size: var(--ap-font-body-size);
+  font-family: 'DM Sans', sans-serif;
+  font-size: var(--axis-font-body);
   line-height: var(--ap-line-body);
 }
 
@@ -76,7 +64,7 @@
 .axis-about-premium h2,
 .axis-about-premium h3,
 .axis-about-premium h4 {
-  font-family: var(--ap-font-heading);
+  font-family: 'Outfit', sans-serif;
   margin: 0;
 }
 
@@ -116,14 +104,14 @@
   gap: 10px;
 
   color: var(--ap-red);
-  font-size: var(--ap-font-label);
+  font-size: 10px;
   font-weight: 800;
   letter-spacing: 1.5px;
 }
 
 .ap-section-label {
   color: #929DB0;
-  font-size: var(--ap-font-label);
+  font-size: 10px;
   font-weight: 800;
   letter-spacing: 1.6px;
 }
@@ -136,7 +124,7 @@
   padding: 9px 13px;
   border-radius: 5px;
 
-  font-size: var(--ap-font-label);
+  font-size: 10px;
   font-weight: 800;
   letter-spacing: 1.3px;
 }
@@ -247,7 +235,7 @@
   margin-bottom: 32px;
 
   color: rgba(255,255,255,0.78);
-  font-size: var(--ap-font-label);
+  font-size: 10px;
   font-weight: 800;
   letter-spacing: 1.8px;
 }
@@ -276,7 +264,7 @@
 .ap-hero h1 {
   max-width: 780px;
 
-  font-size: var(--ap-font-hero);
+  font-size: var(--axis-font-hero);
   font-weight: 800;
   line-height: 1.08;
   letter-spacing: -2.6px;
@@ -309,7 +297,7 @@
   max-width: 480px;
 
   color: rgba(255,255,255,0.68);
-  font-size: var(--ap-font-body-size);
+  font-size: var(--axis-font-body);
   line-height: var(--ap-line-body);
 }
 
@@ -362,7 +350,7 @@
 
 .ap-hero-stats strong {
   color: #FFFFFF;
-  font-family: var(--ap-font-heading);
+  font-family: 'Outfit', sans-serif;
   font-size: 28px;
   font-weight: 700;
 }
@@ -512,7 +500,7 @@
   margin-top: 22px;
 
   color: var(--ap-navy);
-  font-size: var(--ap-font-section);
+  font-size: var(--axis-font-section);
   font-weight: 700;
   line-height: var(--ap-line-heading);
   letter-spacing: -1.3px;
@@ -546,7 +534,7 @@
 }
 
 .ap-founded-year {
-  font-family: var(--ap-font-heading);
+  font-family: 'Outfit', sans-serif;
   font-size: 43px;
   font-weight: 800;
 
@@ -576,7 +564,7 @@
 
 .ap-founded-block small {
   color: var(--ap-muted);
-  font-size: var(--ap-font-small);
+  font-size: 12px;
 }
 
 .ap-intro-copy {
@@ -586,15 +574,15 @@
 .ap-intro-copy p,
 .ap-identity-copy > p {
   color: var(--ap-muted);
-  font-size: var(--ap-font-body-size);
+  font-size: var(--axis-font-body);
   line-height: var(--ap-line-body);
   margin-bottom: 19px;
 }
 
 .ap-intro-copy .ap-lead {
   color: var(--ap-navy);
-  font-family: var(--ap-font-heading);
-  font-size: var(--ap-font-subtitle);
+  font-family: 'Outfit', sans-serif;
+  font-size: var(--axis-font-subtitle);
   font-weight: 600;
   line-height: 1.6;
   margin-bottom: 24px;
@@ -674,7 +662,7 @@
   margin-top: 40px;
 
   color: #8BE6F2;
-  font-size: var(--ap-font-label);
+  font-size: 10px;
   font-weight: 800;
   letter-spacing: 2px;
 }
@@ -683,7 +671,7 @@
   margin-top: 20px;
 
   color: #FFFFFF;
-  font-size: var(--ap-font-page-title);
+  font-size: var(--axis-font-page-title);
   font-weight: 800;
   line-height: 1.12;
   letter-spacing: -1.8px;
@@ -707,7 +695,7 @@
   margin-top: 28px;
 
   color: rgba(255,255,255,0.72);
-  font-size: var(--ap-font-body-size);
+  font-size: var(--axis-font-body);
   line-height: var(--ap-line-body);
 }
 
@@ -835,7 +823,7 @@
 }
 
 .ap-identity-glass > strong {
-  font-family: var(--ap-font-heading);
+  font-family: 'Outfit', sans-serif;
   font-size: 20px;
   font-weight: 800;
   letter-spacing: 1px;
@@ -844,7 +832,7 @@
 .ap-identity-glass > small {
   margin-top: 7px;
   color: #B6C9FF;
-  font-size: var(--ap-font-small);
+  font-size: 12px;
   font-weight: 700;
   letter-spacing: 1.1px;
 }
@@ -984,7 +972,7 @@
   margin-top: 40px;
 
   color: #FFFFFF;
-  font-size: var(--ap-font-card);
+  font-size: var(--axis-font-card);
   font-weight: 700;
   line-height: 1.35;
 }
@@ -997,7 +985,7 @@
   margin-top: 18px;
 
   color: rgba(255,255,255,0.78);
-  font-size: var(--ap-font-body-size);
+  font-size: var(--axis-font-body);
   line-height: 1.8;
 }
 
@@ -1007,7 +995,7 @@
   bottom: -35px;
 
   color: rgba(255,255,255,0.10);
-  font-family: var(--ap-font-heading);
+  font-family: 'Outfit', sans-serif;
   font-size: 170px;
   font-weight: 800;
   line-height: 1;
@@ -1066,7 +1054,7 @@
   padding-bottom: 5px;
 
   color: var(--ap-muted);
-  font-size: var(--ap-font-body-size);
+  font-size: var(--axis-font-body);
   line-height: 1.8;
 }
 
@@ -1131,7 +1119,7 @@
 
 .ap-value-card h3 {
   color: var(--ap-navy);
-  font-size: var(--ap-font-card);
+  font-size: var(--axis-font-card);
   font-weight: 700;
   line-height: 1.3;
 }
@@ -1140,7 +1128,7 @@
   margin-top: 13px;
 
   color: var(--ap-muted);
-  font-size: var(--ap-font-small);
+  font-size: 12px;
   line-height: 1.8;
 }
 
@@ -1269,7 +1257,7 @@
   margin-top: 25px;
 
   color: var(--ap-muted);
-  font-size: var(--ap-font-body-size);
+  font-size: var(--axis-font-body);
   line-height: var(--ap-line-body);
 }
 
@@ -1303,14 +1291,14 @@
 
 .ap-commitment-item > span {
   color: var(--ap-blue);
-  font-family: var(--ap-font-heading);
+  font-family: 'Outfit', sans-serif;
   font-size: 13px;
   font-weight: 800;
 }
 
 .ap-commitment-item p {
   color: var(--ap-navy);
-  font-size: var(--ap-font-body-size);
+  font-size: var(--axis-font-body);
   font-weight: 600;
 }
 
@@ -1381,7 +1369,7 @@
   margin-top: 30px;
 
   color: #FFFFFF;
-  font-size: var(--ap-font-page-title);
+  font-size: var(--axis-font-page-title);
   font-weight: 800;
   line-height: 1.12;
   letter-spacing: -1.8px;
@@ -1405,7 +1393,7 @@
   margin-top: 25px;
 
   color: rgba(255,255,255,0.68);
-  font-size: var(--ap-font-body-size);
+  font-size: var(--axis-font-body);
   line-height: var(--ap-line-body);
 }
 
@@ -1474,7 +1462,7 @@
 
 .ap-cta-bottom span:first-child {
   color: #FFFFFF;
-  font-family: var(--ap-font-heading);
+  font-family: 'Outfit', sans-serif;
   font-size: 17px;
   letter-spacing: 1px;
 }
@@ -1725,16 +1713,6 @@
 ========================================================= */
 
 @media (max-width: 600px) {
-  .axis-about-premium {
-    --ap-font-hero: 42px;
-    --ap-font-page-title: 36px;
-    --ap-font-section: 32px;
-    --ap-font-card: 19px;
-    --ap-font-subtitle: 16px;
-    --ap-font-body-size: 14px;
-    --ap-font-small: 11px;
-  }
-
   .ap-container {
     width: calc(100% - 36px);
   }
@@ -2073,7 +2051,7 @@
 
 .ap-values-heading > p {
   max-width: 400px;
-  font-size: var(--ap-font-body-size);
+  font-size: var(--axis-font-body);
   line-height: 1.85;
 }
 
@@ -2173,7 +2151,7 @@
   position: relative;
   z-index: 1;
   color: #101D49;
-  font-size: var(--ap-font-card);
+  font-size: var(--axis-font-card);
   line-height: 1.25;
   letter-spacing: -.35px;
   text-wrap: balance;
@@ -2184,7 +2162,7 @@
   z-index: 1;
   margin-top: 12px;
   color: #64748B;
-  font-size: var(--ap-font-small);
+  font-size: 12px;
   line-height: 1.85;
 }
 
@@ -2526,7 +2504,7 @@
   position: relative;
   z-index: 1;
   color: #101D49;
-  font-size: var(--ap-font-card);
+  font-size: var(--axis-font-card);
   line-height: 1.3;
   letter-spacing: -.4px;
 }
@@ -2536,7 +2514,7 @@
   z-index: 1;
   margin-top: 13px;
   color: #64748B;
-  font-size: var(--ap-font-small);
+  font-size: 12px;
   line-height: 1.9;
 }
 
@@ -2639,7 +2617,7 @@
   max-width: 450px;
   margin-top: 25px;
   color: rgba(255,255,255,.68);
-  font-size: var(--ap-font-body-size);
+  font-size: var(--axis-font-body);
   line-height: 1.9;
 }
 
@@ -2793,7 +2771,7 @@
   background: rgba(6,182,212,.11);
   border: 1px solid rgba(6,182,212,.23);
   border-radius: 11px;
-  font-family: var(--ap-font-heading);
+  font-family: 'Outfit', sans-serif;
   font-size: 12px;
   font-weight: 800;
   transition: background .3s ease, color .3s ease, transform .3s ease;
@@ -2801,7 +2779,7 @@
 
 .ap-commitment-item p {
   color: rgba(255,255,255,.85);
-  font-size: var(--ap-font-body-size);
+  font-size: var(--axis-font-body);
   font-weight: 600;
   line-height: 1.5;
   transition: color .3s ease;
@@ -2849,14 +2827,14 @@
   color: #FFFFFF;
   background: linear-gradient(135deg, #D71920, #7C3AED);
   border-radius: 9px;
-  font-family: var(--ap-font-heading);
+  font-family: 'Outfit', sans-serif;
   font-size: 19px;
   font-weight: 800;
 }
 
 .ap-signoff-brand > span:last-child {
   color: #FFFFFF;
-  font-family: var(--ap-font-heading);
+  font-family: 'Outfit', sans-serif;
   font-size: 16px;
   font-weight: 800;
   letter-spacing: 1.3px;
