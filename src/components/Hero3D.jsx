@@ -1,204 +1,442 @@
+
 "use client";
 
-import { useRef, useMemo, Suspense } from "react";
-import { Canvas, useFrame } from "@react-three/fiber";
-import { 
-  Float, 
-  ContactShadows, 
-  PerspectiveCamera, 
-  Environment, 
-  MeshTransmissionMaterial,
-  Lightformer 
-} from "@react-three/drei";
-import { EffectComposer, Bloom } from "@react-three/postprocessing";
+import {
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
+
+import {
+  Canvas,
+  useFrame,
+  useThree,
+} from "@react-three/fiber";
+
 import * as THREE from "three";
 
-/* ============================================
-   CYBERSECURITY SERVER STACK
-============================================ */
-function ServerCore() {
-  const groupRef = useRef();
-  const shieldRef = useRef();
+/* =========================================
+   NETWORK NODE DATA
+========================================= */
 
-  useFrame((state) => {
-    const t = state.clock.getElapsedTime();
-    if (groupRef.current) {
-      groupRef.current.rotation.y = Math.sin(t * 0.2) * 0.3;
+function createNetworkNodes() {
+  const count = 32;
+  const radius = 2.25;
+
+  return Array.from({ length: count }, (_, i) => {
+    const phi = Math.acos(
+      1 - (2 * (i + 0.5)) / count
+    );
+
+    const theta = Math.PI * (1 + Math.sqrt(5)) * i;
+
+    return {
+      position: [
+        radius * Math.sin(phi) * Math.cos(theta),
+        radius * Math.cos(phi),
+        radius * Math.sin(phi) * Math.sin(theta),
+      ],
+
+      color: i % 5 === 0 ? "#ff3545" : "#4d9dff",
+
+      size: i % 5 === 0 ? 0.075 : 0.045,
+    };
+  });
+}
+
+/* =========================================
+   INSTANCED NETWORK NODES
+========================================= */
+
+function NetworkNodes({ nodes, animate }) {
+  const meshRef = useRef();
+
+  const invalidate = useThree(
+    (state) => state.invalidate
+  );
+
+  useEffect(() => {
+    const mesh = meshRef.current;
+
+    if (!mesh) return;
+
+    const dummy = new THREE.Object3D();
+
+    nodes.forEach((node, index) => {
+      dummy.position.set(...node.position);
+      dummy.scale.setScalar(node.size);
+      dummy.updateMatrix();
+
+      mesh.setMatrixAt(index, dummy.matrix);
+
+      mesh.setColorAt(
+        index,
+        new THREE.Color(node.color)
+      );
+    });
+
+    mesh.instanceMatrix.needsUpdate = true;
+
+    if (mesh.instanceColor) {
+      mesh.instanceColor.needsUpdate = true;
     }
-    if (shieldRef.current) {
-      shieldRef.current.rotation.y = Math.sin(t * 0.15) * -0.2;
-    }
+
+    invalidate();
+  }, [nodes, invalidate]);
+
+  useFrame((state, delta) => {
+    if (!animate || !meshRef.current) return;
+
+    meshRef.current.rotation.y += delta * 0.07;
+
+    meshRef.current.rotation.x =
+      Math.sin(state.clock.elapsedTime * 0.15) * 0.08;
   });
 
-  const nodes = useMemo(() => {
-    const temp = [];
-    for (let i = 0; i < 20; i++) {
-      const angle = (i / 20) * Math.PI * 2;
-      const radius = 3.5 + Math.random() * 0.8;
-      temp.push(
-        <mesh 
-          key={i} 
-          position={[
-            Math.cos(angle) * radius, 
-            (Math.random() - 0.5) * 5, 
-            Math.sin(angle) * radius
-          ]}
-        >
-          <boxGeometry args={[0.05, 0.05, 0.05]} />
-          <meshBasicMaterial 
-            color={i % 4 === 0 ? "#ff3a42" : "#96c5ff"} 
-            toneMapped={false} 
-          />
-        </mesh>
-      );
+  return (
+    <instancedMesh
+      ref={meshRef}
+      args={[undefined, undefined, nodes.length]}
+      frustumCulled
+    >
+      <sphereGeometry args={[1, 6, 6]} />
+      <meshBasicMaterial toneMapped={false} />
+    </instancedMesh>
+  );
+}
+
+/* =========================================
+   NETWORK CONNECTIONS
+========================================= */
+
+function NetworkLines({ nodes }) {
+  const geometry = useMemo(() => {
+    const positions = [];
+
+    const points = nodes.map(
+      (node) =>
+        new THREE.Vector3(...node.position)
+    );
+
+    for (let i = 0; i < points.length; i++) {
+      for (let j = i + 1; j < points.length; j++) {
+        if (points[i].distanceTo(points[j]) < 1.15) {
+          positions.push(
+            points[i].x,
+            points[i].y,
+            points[i].z,
+            points[j].x,
+            points[j].y,
+            points[j].z
+          );
+        }
+      }
     }
-    return temp;
-  }, []);
+
+    const geo = new THREE.BufferGeometry();
+
+    geo.setAttribute(
+      "position",
+      new THREE.Float32BufferAttribute(positions, 3)
+    );
+
+    return geo;
+  }, [nodes]);
+
+  useEffect(() => {
+    return () => {
+      geometry.dispose();
+    };
+  }, [geometry]);
 
   return (
-    <group ref={groupRef}>
-      {/* SERVER STACK */}
-      <group position={[0, 0, 0]}>
-        {[0.7, 0, -0.7].map((y, index) => (
-          <mesh key={index} position={[0, y, 0]}>
-            <boxGeometry args={[1.8, 0.25, 1.4]} />
-            <meshStandardMaterial 
-              color="#0a1128" 
-              metalness={0.9} 
-              roughness={0.2} 
-              envMapIntensity={1.5}
-            />
-            <mesh position={[0.7, 0, 0.71]}>
-              <planeGeometry args={[0.1, 0.06]} />
-              <meshBasicMaterial color="#ff3a42" toneMapped={false} />
-            </mesh>
-            <mesh position={[0.5, 0, 0.71]}>
-              <planeGeometry args={[0.1, 0.06]} />
-              <meshBasicMaterial color="#4a7aff" toneMapped={false} />
-            </mesh>
-            <mesh position={[-0.4, 0, 0.71]}>
-              <planeGeometry args={[0.8, 0.05]} />
-              <meshBasicMaterial color="#96c5ff" toneMapped={false} opacity={0.5} transparent />
-            </mesh>
-          </mesh>
-        ))}
-      </group>
+    <lineSegments geometry={geometry}>
+      <lineBasicMaterial
+        color="#397bcf"
+        transparent
+        opacity={0.22}
+        depthWrite={false}
+      />
+    </lineSegments>
+  );
+}
 
-      {/* GLASS CYBERSHIELD */}
-      <mesh ref={shieldRef}>
-        <octahedronGeometry args={[2.8, 0]} />
-        <MeshTransmissionMaterial
-          backside
-          samples={4}
-          thickness={0.2}
-          chromaticAberration={0.05}
-          anisotropy={0.1}
-          distortion={0.1}
-          distortionScale={0.2}
-          temporalDistortion={0.1}
-          iridescence={0.5}
-          iridescenceIOR={1.2}
-          color="#ffffff"
-          opacity={0.3}
+/* =========================================
+   ORBIT RINGS
+========================================= */
+
+function OrbitRings({ animate }) {
+  const orbitRef = useRef();
+
+  useFrame((_, delta) => {
+    if (!animate || !orbitRef.current) return;
+
+    orbitRef.current.rotation.z += delta * 0.045;
+  });
+
+  return (
+    <group ref={orbitRef}>
+      <mesh rotation={[Math.PI / 2.5, 0.2, 0]}>
+        <torusGeometry args={[2.8, 0.012, 5, 64]} />
+        <meshBasicMaterial
+          color="#d71920"
+          transparent
+          opacity={0.7}
         />
       </mesh>
 
-      {/* FIREWALL RINGS */}
-      <mesh rotation={[Math.PI / 2, 0, 0]}>
-        <torusGeometry args={[3.2, 0.015, 16, 100]} />
-        <meshBasicMaterial color="#ff3a42" transparent opacity={0.4} toneMapped={false} />
-      </mesh>
-      <mesh rotation={[0, 0, Math.PI / 3]}>
-        <torusGeometry args={[3.4, 0.01, 16, 100]} />
-        <meshBasicMaterial color="#4a7aff" transparent opacity={0.3} toneMapped={false} />
+      <mesh rotation={[0.5, Math.PI / 3, 0.5]}>
+        <torusGeometry args={[3.05, 0.009, 5, 64]} />
+        <meshBasicMaterial
+          color="#438cff"
+          transparent
+          opacity={0.55}
+        />
       </mesh>
 
-      {nodes}
+      <mesh rotation={[1.2, 0.4, 0.8]}>
+        <torusGeometry args={[3.25, 0.008, 5, 64]} />
+        <meshBasicMaterial
+          color="#438cff"
+          transparent
+          opacity={0.3}
+        />
+      </mesh>
     </group>
   );
 }
 
-/* ============================================
-   SCENE
-============================================ */
-function Scene() {
+/* =========================================
+   CENTRAL CYBER CORE
+========================================= */
+
+function CyberCore({ animate }) {
+  const coreRef = useRef();
+
+  useFrame((state) => {
+    if (!animate || !coreRef.current) return;
+
+    const pulse =
+      1 +
+      Math.sin(state.clock.elapsedTime * 1.5) * 0.025;
+
+    coreRef.current.scale.setScalar(pulse);
+  });
+
   return (
-    <>
-      <PerspectiveCamera makeDefault position={[0, 0, 11]} fov={40} />
-      <ambientLight intensity={0.3} />
-      <directionalLight position={[5, 5, 5]} intensity={2.5} color="#ffffff" />
-      <directionalLight position={[-5, 5, -5]} intensity={3} color="#4a7aff" />
-      <pointLight position={[0, 0, 0]} intensity={6} color="#4a7aff" distance={6} />
-      <spotLight position={[0, -5, 5]} intensity={2} color="#ff3a42" angle={0.5} penumbra={1} />
+    <group ref={coreRef}>
+      <mesh>
+        <icosahedronGeometry args={[0.65, 1]} />
+        <meshBasicMaterial
+          color="#132e59"
+          wireframe
+          transparent
+          opacity={0.8}
+        />
+      </mesh>
 
-      <Environment resolution={256}>
-        <Lightformer form="rect" intensity={4} position={[5, 5, 5]} scale={[10, 10, 1]} color="#ffffff" />
-        <Lightformer form="rect" intensity={3} position={[-5, 5, -5]} scale={[10, 10, 1]} color="#4a7aff" />
-        <Lightformer form="circle" intensity={2} position={[0, -5, 5]} scale={[5, 5, 1]} color="#ff3a42" />
-      </Environment>
-
-      <Float speed={1.5} rotationIntensity={0.2} floatIntensity={0.5}>
-        <group scale={0.85}>
-          <ServerCore />
-        </group>
-      </Float>
-
-      <ContactShadows position={[0, -2.8, 0]} opacity={0.6} scale={12} blur={3} far={4} color="#000000" frames={1} />
-
-      <EffectComposer>
-        <Bloom intensity={1.5} luminanceThreshold={0.5} luminanceSmoothing={0.9} mipmapBlur />
-      </EffectComposer>
-    </>
+      <mesh>
+        <sphereGeometry args={[0.28, 10, 10]} />
+        <meshBasicMaterial
+          color="#d71920"
+          toneMapped={false}
+        />
+      </mesh>
+    </group>
   );
 }
 
-/* ============================================
-   WRAPPER WITH TEXT VISIBILITY FIX
-============================================ */
-export default function Hero3D() {
-  return (
-    <div style={{ position: 'absolute', inset: 0, zIndex: -1, pointerEvents: 'none', overflow: 'hidden' }}>
-      
-      {/* Cyber Grid Background */}
-      <div style={{ 
-        position: 'absolute', 
-        inset: 0, 
-        background: `
-          linear-gradient(rgba(74, 122, 255, 0.03) 1px, transparent 1px),
-          linear-gradient(90deg, rgba(74, 122, 255, 0.03) 1px, transparent 1px),
-          radial-gradient(circle at 70% 50%, #0a101d 0%, #03050A 70%)
-        `,
-        backgroundSize: '40px 40px, 40px 40px, 100% 100%'
-      }} />
-      
-      <Canvas
-        dpr={[1, 2]}
-        gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
-        style={{ position: "absolute", inset: 0 }}
-        onCreated={({ gl }) => gl.setClearColor(0x000000, 0)}
-      >
-        <Suspense fallback={null}>
-          <Scene />
-        </Suspense>
-      </Canvas>
-      
-      {/* 
-        THIS IS THE TEXT VISIBILITY FIX. 
-        It creates a dark gradient on the left so the servers stay bright on the right.
-      */}
-      <div style={{ 
-        position: 'absolute', 
-        inset: 0, 
-        pointerEvents: 'none',
-        background: 'linear-gradient(90deg, #03050A 0%, rgba(3, 5, 10, 0.95) 35%, transparent 65%)'
-      }} />
+/* =========================================
+   MAIN SCENE
+========================================= */
 
-      {/* Cinematic Grain */}
-      <div style={{ 
-        position: 'absolute', inset: 0, opacity: 0.04, mixBlendMode: 'overlay', pointerEvents: 'none',
-        backgroundImage: `url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/></filter><rect width='100%' height='100%' filter='url(%23n)' opacity='0.9'/></svg>")`,
-        backgroundSize: '200px 200px'
-      }} />
+function Scene({ animate }) {
+  const nodes = useMemo(
+    () => createNetworkNodes(),
+    []
+  );
+
+  return (
+    <group position={[0.6, 0, 0]}>
+      <NetworkLines nodes={nodes} />
+
+      <NetworkNodes
+        nodes={nodes}
+        animate={animate}
+      />
+
+      <OrbitRings animate={animate} />
+
+      <CyberCore animate={animate} />
+    </group>
+  );
+}
+
+/* =========================================
+   HERO BACKGROUND
+========================================= */
+
+export default function Hero3D() {
+  const containerRef = useRef(null);
+
+  const [visible, setVisible] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  const [reducedMotion, setReducedMotion] = useState(false);
+
+  /* DEVICE SETTINGS */
+
+  useEffect(() => {
+    const mobileQuery = window.matchMedia(
+      "(max-width: 768px)"
+    );
+
+    const motionQuery = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    );
+
+    const updateSettings = () => {
+      setIsMobile(mobileQuery.matches);
+      setReducedMotion(motionQuery.matches);
+    };
+
+    updateSettings();
+
+    mobileQuery.addEventListener("change", updateSettings);
+    motionQuery.addEventListener("change", updateSettings);
+
+    return () => {
+      mobileQuery.removeEventListener("change", updateSettings);
+      motionQuery.removeEventListener("change", updateSettings);
+    };
+  }, []);
+
+  /* VIEWPORT VISIBILITY */
+
+  useEffect(() => {
+    const element = containerRef.current;
+
+    if (!element) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setVisible(entry.isIntersecting);
+      },
+      {
+        threshold: 0,
+        rootMargin: "100px",
+      }
+    );
+
+    observer.observe(element);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
+
+  const animate = !isMobile && !reducedMotion;
+
+  return (
+    <div
+      ref={containerRef}
+      style={{
+        position: "absolute",
+        inset: 0,
+        overflow: "hidden",
+        pointerEvents: "none",
+        zIndex: -1,
+
+        background: `
+          radial-gradient(
+            circle at 72% 48%,
+            rgba(20, 48, 90, 0.42),
+            transparent 38%
+          ),
+          linear-gradient(
+            135deg,
+            #03050A,
+            #080F30
+          )
+        `,
+      }}
+    >
+      {/* 3D CANVAS */}
+
+      {visible && (
+        <Canvas
+          dpr={isMobile ? 1 : [1, 1.15]}
+          frameloop={animate ? "always" : "demand"}
+          gl={{
+            alpha: true,
+            antialias: false,
+            powerPreference: "low-power",
+            stencil: false,
+            depth: true,
+          }}
+          camera={{
+            position: [0, 0, 9],
+            fov: 40,
+          }}
+        >
+          <Scene animate={animate} />
+        </Canvas>
+      )}
+
+      {/* LEFT TEXT READABILITY */}
+
+      <div
+        style={{
+          position: "absolute",
+          inset: 0,
+          pointerEvents: "none",
+
+          background:
+            "linear-gradient(90deg, #03050A 0%, rgba(3,5,10,0.96) 35%, rgba(3,5,10,0.45) 65%, transparent 100%)",
+        }}
+      />
+
+      {/* SUBTLE GRID */}
+
+      <div
+        style={{
+          position: "absolute",
+          inset: 0,
+          pointerEvents: "none",
+          opacity: 0.12,
+
+          backgroundImage: `
+            linear-gradient(
+              rgba(74,122,255,0.12) 1px,
+              transparent 1px
+            ),
+            linear-gradient(
+              90deg,
+              rgba(74,122,255,0.12) 1px,
+              transparent 1px
+            )
+          `,
+
+          backgroundSize: "55px 55px",
+        }}
+      />
+
+      {/* RED AMBIENT GLOW */}
+
+      <div
+        style={{
+          position: "absolute",
+          right: "12%",
+          top: "35%",
+          width: "280px",
+          height: "280px",
+          borderRadius: "50%",
+          background: "rgba(215,25,32,0.07)",
+          filter: "blur(90px)",
+          pointerEvents: "none",
+        }}
+      />
     </div>
   );
 }
