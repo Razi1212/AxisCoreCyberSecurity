@@ -3,6 +3,9 @@ import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Hero3DLoader from "@/components/Hero3DLoader";
+import AboutCTA from "@/components/Aboutcta";
+import ServicesSection from "@/components/Servicescta";
+
 
 import {
   ArrowRight,
@@ -174,8 +177,11 @@ export default function Home() {
         {/* MARQUEE */}
 
         <CyberMarquee />
+         <AboutCTA />
+         <ServicesSection />
 
       </main>
+
 
       <Footer />
     </>
