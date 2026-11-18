@@ -1,7 +1,6 @@
 
 /* =========================================
    AXISCORE SERVICES CTA
-   Global Typography System
    Graphite / Silver / Red
 ========================================= */
 
@@ -16,7 +15,7 @@
   padding: 100px 7%;
   background: var(--cta-bg);
   color: var(--cta-white);
-  font-family: 'DM Sans', sans-serif;
+  font-family: "DM Sans", sans-serif;
 }
 
 .services-cta__container {
@@ -27,7 +26,9 @@
   margin: 0 auto;
 }
 
-/* Background */
+/* =========================================
+   BACKGROUND TEXTURE
+========================================= */
 
 .services-cta__texture {
   position: absolute;
@@ -35,14 +36,31 @@
   z-index: -1;
   opacity: 0.12;
   pointer-events: none;
+
   background-image:
-    linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px);
+    linear-gradient(
+      rgba(255,255,255,0.035) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(255,255,255,0.035) 1px,
+      transparent 1px
+    );
+
   background-size: 70px 70px;
-  mask-image: linear-gradient(to right, transparent, black 35%, black);
+
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    black 35%,
+    black
+  );
 }
 
-/* Top row */
+/* =========================================
+   TOP ROW
+========================================= */
 
 .services-cta__top {
   display: flex;
@@ -80,7 +98,9 @@
   padding: 0 5px;
 }
 
-/* Main layout */
+/* =========================================
+   MAIN LAYOUT
+========================================= */
 
 .services-cta__main {
   display: grid;
@@ -90,7 +110,9 @@
   padding: 65px 0 75px;
 }
 
-/* Heading */
+/* =========================================
+   HEADING
+========================================= */
 
 .services-cta__copy {
   position: relative;
@@ -100,7 +122,7 @@
 .services-cta__copy h2 {
   margin: 0;
   color: var(--cta-white);
-  font-family: 'Outfit', sans-serif;
+  font-family: "Outfit", sans-serif;
   font-size: var(--axis-font-section);
   line-height: 1.2;
   font-weight: 700;
@@ -115,12 +137,14 @@
   max-width: 490px;
   margin: 22px 0 30px;
   color: var(--cta-muted);
-  font-family: 'DM Sans', sans-serif;
+  font-family: "DM Sans", sans-serif;
   font-size: var(--axis-font-body);
   line-height: 1.8;
 }
 
-/* CTA link */
+/* =========================================
+   CTA LINK
+========================================= */
 
 .services-cta__link {
   display: inline-flex;
@@ -142,7 +166,9 @@
   height: 46px;
   color: #fff;
   background: var(--axis-red);
-  transition: transform 0.3s ease, background 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    background 0.3s ease;
 }
 
 .services-cta__link:hover .services-cta__link-icon {
@@ -150,7 +176,9 @@
   background: #ef252d;
 }
 
-/* Architectural visual */
+/* =========================================
+   ARCHITECTURAL VISUAL
+========================================= */
 
 .services-cta__visual {
   position: relative;
@@ -170,11 +198,13 @@
   height: 390px;
   right: 0;
   top: 0;
+
   background: radial-gradient(
     circle,
     rgba(215,25,32,0.12),
     transparent 70%
   );
+
   pointer-events: none;
 }
 
@@ -204,12 +234,14 @@
 .services-cta__structure {
   position: absolute;
   border: 1px solid rgba(210,214,222,0.28);
+
   background: linear-gradient(
     135deg,
     rgba(255,255,255,0.09),
     rgba(255,255,255,0.015) 55%,
     rgba(0,0,0,0.2)
   );
+
   backdrop-filter: blur(3px);
 }
 
@@ -256,6 +288,7 @@
   height: 180px;
   left: 68%;
   top: 38px;
+
   background: linear-gradient(
     to bottom,
     transparent,
@@ -263,6 +296,7 @@
     rgba(215,25,32,0.15),
     transparent
   );
+
   box-shadow: 0 0 20px rgba(215,25,32,0.4);
   transform: rotate(24deg);
 }
@@ -274,15 +308,122 @@
   bottom: 12px;
   height: 45px;
   border-top: 1px solid rgba(255,255,255,0.18);
+
   background: linear-gradient(
     to bottom,
     rgba(255,255,255,0.04),
     transparent
   );
+
   transform: perspective(200px) rotateX(35deg);
 }
 
-/* Bottom information */
+/* =========================================
+   NEW TECHNOLOGY EXPERTISE SECTION
+========================================= */
+
+.services-cta__expertise {
+  padding: 45px 0 55px;
+  border-top: 1px solid rgba(255,255,255,0.14);
+}
+
+.services-cta__expertise-heading {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 25px;
+  margin-bottom: 32px;
+}
+
+.services-cta__expertise-label {
+  color: var(--axis-red);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.7px;
+}
+
+.services-cta__expertise-heading h3 {
+  margin: 12px 0 0;
+  color: var(--cta-white);
+  font-family: "Outfit", sans-serif;
+  font-size: clamp(25px, 3vw, 38px);
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.8px;
+}
+
+.services-cta__expertise-index {
+  color: #858891;
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  white-space: nowrap;
+}
+
+.services-cta__expertise-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  border-top: 1px solid rgba(255,255,255,0.13);
+  border-bottom: 1px solid rgba(255,255,255,0.13);
+}
+
+.services-cta__expertise-item {
+  position: relative;
+  min-height: 190px;
+  padding: 26px 22px;
+  border-right: 1px solid rgba(255,255,255,0.12);
+  transition: background 0.3s ease;
+}
+
+.services-cta__expertise-item:last-child {
+  border-right: none;
+}
+
+.services-cta__expertise-item:hover {
+  background: rgba(215,25,32,0.055);
+}
+
+.services-cta__expertise-item > svg:first-child {
+  color: var(--axis-red);
+  margin-bottom: 20px;
+}
+
+.services-cta__expertise-item > span {
+  float: right;
+  color: #777b84;
+  font-size: 10px;
+  letter-spacing: 1px;
+}
+
+.services-cta__expertise-item h4 {
+  margin: 0 0 9px;
+  color: var(--cta-white);
+  font-family: "Outfit", sans-serif;
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.services-cta__expertise-item p {
+  margin: 0;
+  color: var(--cta-muted);
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+.services-cta__expertise-item .expertise-arrow {
+  position: absolute;
+  right: 20px;
+  bottom: 20px;
+  color: var(--axis-red);
+  transition: transform 0.3s ease;
+}
+
+.services-cta__expertise-item:hover .expertise-arrow {
+  transform: translate(4px, -4px);
+}
+
+/* =========================================
+   ORIGINAL FOOTER
+========================================= */
 
 .services-cta__footer {
   display: flex;
@@ -305,7 +446,9 @@
   transform: rotate(45deg);
 }
 
-/* Animation */
+/* =========================================
+   ANIMATION
+========================================= */
 
 @keyframes architectureFloat {
   0%, 100% {
@@ -317,7 +460,9 @@
   }
 }
 
-/* Tablet */
+/* =========================================
+   TABLET
+========================================= */
 
 @media (max-width: 900px) {
   .services-cta {
@@ -332,9 +477,23 @@
   .services-cta__visual {
     min-height: 350px;
   }
+
+  .services-cta__expertise-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .services-cta__expertise-item:nth-child(2) {
+    border-right: none;
+  }
+
+  .services-cta__expertise-item:nth-child(-n+2) {
+    border-bottom: 1px solid rgba(255,255,255,0.12);
+  }
 }
 
-/* Mobile */
+/* =========================================
+   MOBILE
+========================================= */
 
 @media (max-width: 600px) {
   .services-cta {
@@ -363,6 +522,29 @@
     transform-origin: center;
   }
 
+  .services-cta__expertise {
+    padding: 35px 0 40px;
+  }
+
+  .services-cta__expertise-heading {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .services-cta__expertise-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .services-cta__expertise-item {
+    min-height: 165px;
+    border-right: none;
+    border-bottom: 1px solid rgba(255,255,255,0.12);
+  }
+
+  .services-cta__expertise-item:last-child {
+    border-bottom: none;
+  }
+
   .services-cta__footer {
     justify-content: flex-start;
     gap: 13px;
@@ -370,14 +552,493 @@
   }
 }
 
-/* Accessibility */
+/* =========================================
+   ACCESSIBILITY
+========================================= */
 
 @media (prefers-reduced-motion: reduce) {
   .services-cta__architecture {
     animation: none;
   }
 
-  .services-cta__link-icon {
+  .services-cta__link-icon,
+  .services-cta__expertise-item,
+  .services-cta__expertise-item .expertise-arrow {
+    transition: none;
+  }
+}
+
+
+/* =========================================
+   AXISCORE PREMIUM ATMOSPHERIC BACKGROUND
+========================================= */
+
+.services-cta {
+  background:
+    radial-gradient(
+      ellipse at 82% 22%,
+      rgba(215, 25, 32, 0.13),
+      transparent 35%
+    ),
+    radial-gradient(
+      ellipse at 12% 85%,
+      rgba(37, 99, 235, 0.07),
+      transparent 35%
+    ),
+    linear-gradient(
+      135deg,
+      #101116 0%,
+      #17191f 48%,
+      #0d0f14 100%
+    );
+}
+
+/* Enhanced technical grid */
+
+.services-cta__texture {
+  opacity: 0.2;
+
+  background-image:
+    linear-gradient(
+      rgba(255,255,255,0.045) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(255,255,255,0.045) 1px,
+      transparent 1px
+    );
+
+  background-size: 65px 65px;
+
+  mask-image: radial-gradient(
+    ellipse at 65% 45%,
+    black 10%,
+    transparent 85%
+  );
+}
+
+/* Ambient red lighting */
+
+.services-cta::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  top: 5%;
+  right: -180px;
+  width: 550px;
+  height: 550px;
+  border-radius: 50%;
+
+  background: radial-gradient(
+    circle,
+    rgba(215,25,32,0.13),
+    rgba(215,25,32,0.035) 40%,
+    transparent 70%
+  );
+
+  filter: blur(35px);
+  pointer-events: none;
+}
+
+/* Moving cinematic light beam */
+
+.services-cta::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  left: -40%;
+  width: 35%;
+  height: 100%;
+
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(215,25,32,0.035),
+    rgba(255,255,255,0.025),
+    transparent
+  );
+
+  transform: skewX(-20deg);
+  animation: axisAmbientLight 12s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes axisAmbientLight {
+  0%, 100% {
+    left: -40%;
+    opacity: 0;
+  }
+
+  15% {
+    opacity: 1;
+  }
+
+  65% {
+    opacity: 0.7;
+  }
+
+  85% {
+    left: 110%;
+    opacity: 0;
+  }
+}
+
+/* Architectural visual enhancement */
+
+.services-cta__visual::before {
+  background: radial-gradient(
+    circle,
+    rgba(215,25,32,0.2),
+    rgba(215,25,32,0.045) 40%,
+    transparent 72%
+  );
+}
+
+/* Expertise cards metallic background */
+
+.services-cta__expertise-item {
+  background: linear-gradient(
+    145deg,
+    rgba(255,255,255,0.025),
+    rgba(255,255,255,0.005)
+  );
+
+  transition:
+    background 0.35s ease,
+    box-shadow 0.35s ease,
+    transform 0.35s ease;
+}
+
+.services-cta__expertise-item:hover {
+  background: linear-gradient(
+    145deg,
+    rgba(215,25,32,0.12),
+    rgba(255,255,255,0.015)
+  );
+
+  box-shadow: inset 0 2px 0 rgba(215,25,32,0.7);
+}
+
+/* Soft red glow on icons */
+
+.services-cta__expertise-item > svg:first-child {
+  filter: drop-shadow(
+    0 0 8px rgba(215,25,32,0.3)
+  );
+}
+
+/* Reduced motion accessibility */
+
+@media (prefers-reduced-motion: reduce) {
+  .services-cta::after {
+    animation: none;
+  }
+}
+
+
+
+/* =========================================
+   AXISCORE FAQ SECTION
+========================================= */
+
+.services-cta__faq {
+  position: relative;
+  padding: 85px 0 65px;
+  border-top: 1px solid rgba(255,255,255,0.13);
+}
+
+/* Header */
+
+.services-cta__faq-header {
+  display: grid;
+  grid-template-columns: 1fr 0.55fr;
+  gap: 60px;
+  align-items: end;
+  margin-bottom: 55px;
+}
+
+.services-cta__faq-intro h3 {
+  margin: 17px 0;
+  color: var(--cta-white);
+  font-family: "Outfit", sans-serif;
+  font-size: clamp(36px, 5vw, 58px);
+  line-height: 1.1;
+  font-weight: 700;
+  letter-spacing: -1.8px;
+}
+
+.services-cta__faq-intro h3 span {
+  color: var(--axis-red);
+}
+
+.services-cta__faq-intro > p {
+  max-width: 470px;
+  color: var(--cta-muted);
+  font-size: 14px;
+  line-height: 1.8;
+}
+
+/* Header aside */
+
+.services-cta__faq-aside {
+  padding: 22px;
+  border-left: 2px solid var(--axis-red);
+  background: rgba(255,255,255,0.025);
+}
+
+.services-cta__faq-aside-number {
+  color: var(--axis-red);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.6px;
+}
+
+.services-cta__faq-aside p {
+  color: var(--cta-muted);
+  font-size: 13px;
+  line-height: 1.8;
+  margin: 15px 0;
+}
+
+.services-cta__faq-contact {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--cta-white);
+  font-size: 12px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.services-cta__faq-contact:hover {
+  color: var(--axis-red);
+}
+
+/* FAQ list */
+
+.services-cta__faq-list {
+  border-top: 1px solid rgba(255,255,255,0.15);
+}
+
+.services-cta__faq-item {
+  border-bottom: 1px solid rgba(255,255,255,0.13);
+}
+
+.services-cta__faq-item summary {
+  display: grid;
+  grid-template-columns: 55px 1fr 35px;
+  align-items: center;
+  gap: 18px;
+  min-height: 88px;
+  padding: 20px 8px;
+  cursor: pointer;
+  list-style: none;
+  transition: background 0.3s ease;
+}
+
+.services-cta__faq-item summary::-webkit-details-marker {
+  display: none;
+}
+
+.services-cta__faq-item summary:hover {
+  background: rgba(255,255,255,0.025);
+}
+
+.services-cta__faq-number {
+  color: var(--axis-red);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.services-cta__faq-question {
+  color: var(--cta-white);
+  font-family: "Outfit", sans-serif;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 1.5;
+  transition: color 0.3s ease;
+}
+
+.services-cta__faq-item summary:hover
+.services-cta__faq-question {
+  color: #ffffff;
+}
+
+/* Plus / Minus icon */
+
+.services-cta__faq-toggle {
+  position: relative;
+  width: 32px;
+  height: 32px;
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 50%;
+  transition:
+    background 0.3s ease,
+    border-color 0.3s ease,
+    transform 0.3s ease;
+}
+
+.services-cta__faq-toggle::before,
+.services-cta__faq-toggle::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 11px;
+  height: 1.5px;
+  background: var(--cta-white);
+  transform: translate(-50%, -50%);
+}
+
+.services-cta__faq-toggle::after {
+  transform: translate(-50%, -50%) rotate(90deg);
+  transition: transform 0.3s ease;
+}
+
+/* Open state */
+
+.services-cta__faq-item[open] summary {
+  background: rgba(215,25,32,0.035);
+}
+
+.services-cta__faq-item[open]
+.services-cta__faq-toggle {
+  background: var(--axis-red);
+  border-color: var(--axis-red);
+}
+
+.services-cta__faq-item[open]
+.services-cta__faq-toggle::after {
+  transform: translate(-50%, -50%) rotate(0deg);
+}
+
+/* Answer */
+
+.services-cta__faq-answer {
+  max-width: 750px;
+  padding: 0 60px 27px 81px;
+  color: var(--cta-muted);
+  font-size: 13px;
+  line-height: 1.9;
+  animation: faqReveal 0.3s ease;
+}
+
+@keyframes faqReveal {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Bottom CTA */
+
+.services-cta__faq-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  padding-top: 30px;
+}
+
+.services-cta__faq-bottom > span {
+  color: #858891;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+}
+
+.services-cta__faq-bottom a {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--cta-white);
+  font-size: 12px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.services-cta__faq-bottom a:hover {
+  color: var(--axis-red);
+}
+
+/* =========================================
+   TABLET
+========================================= */
+
+@media (max-width: 900px) {
+  .services-cta__faq-header {
+    grid-template-columns: 1fr;
+    gap: 25px;
+  }
+
+  .services-cta__faq-aside {
+    max-width: 100%;
+  }
+}
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 600px) {
+  .services-cta__faq {
+    padding: 60px 0 45px;
+  }
+
+  .services-cta__faq-header {
+    margin-bottom: 35px;
+  }
+
+  .services-cta__faq-intro h3 {
+    font-size: 38px;
+  }
+
+  .services-cta__faq-item summary {
+    grid-template-columns: 30px 1fr 30px;
+    gap: 10px;
+    min-height: 78px;
+    padding: 17px 3px;
+  }
+
+  .services-cta__faq-question {
+    font-size: 15px;
+  }
+
+  .services-cta__faq-toggle {
+    width: 28px;
+    height: 28px;
+  }
+
+  .services-cta__faq-answer {
+    padding: 0 15px 23px 43px;
+    font-size: 12px;
+  }
+
+  .services-cta__faq-bottom {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+
+/* Accessibility */
+
+@media (prefers-reduced-motion: reduce) {
+  .services-cta__faq-answer {
+    animation: none;
+  }
+
+  .services-cta__faq-item *,
+  .services-cta__faq-bottom a {
     transition: none;
   }
 }
