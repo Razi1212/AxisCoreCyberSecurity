@@ -418,57 +418,6 @@ ${formData.message}`
 
       </section>
 
-
-      {/* BOTTOM CTA */}
-      <section className="contact-bottom">
-
-        <div className="bottom-glow"></div>
-
-        <div className="bottom-content">
-
-          <span>READY TO STRENGTHEN YOUR SECURITY?</span>
-
-          <h2>
-            Let's build a more
-            <br />
-            <span>secure future.</span>
-          </h2>
-
-          <p>
-            Take the next step toward smarter, stronger cybersecurity.
-          </p>
-
-          <a href="#inquiry" className="contact-primary-btn">
-            Talk to Our Team
-            <ArrowUpRight size={18} />
-          </a>
-
-        </div>
-
-      </section>
-
-
-      {/* FOOTER */}
-      <footer className="contact-footer">
-
-        <div className="footer-brand">
-          <div className="footer-logo">
-            <ShieldCheck size={25} />
-            <span>AXIS<span>CORE</span></span>
-          </div>
-
-          <p>
-            Intelligent security. Stronger protection.
-            A safer digital future.
-          </p>
-        </div>
-
-        <div className="footer-copy">
-          © {new Date().getFullYear()} AXISCORE. All rights reserved.
-        </div>
-
-      </footer>
-
     </main>
   );
 }

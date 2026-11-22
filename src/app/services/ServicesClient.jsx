@@ -300,8 +300,11 @@ export default function ServicesClient() {
   };
 
   return (
+
+    <>
+  
+     <Navbar />
     <main className="axis-services">
-      <Navbar />
       {/* HERO */}
       <section className="svc-hero">
         <div className="svc-hero-grid" />
@@ -654,5 +657,6 @@ export default function ServicesClient() {
       </section>
      <Footer />
     </main>
+      </>
   );
 }
