@@ -1326,3 +1326,15 @@ p {
     transition-duration: 0.01ms !important;
   }
 }
+
+
+.hero-section-dark {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+
+.hero-section-dark > *:not(:first-child) {
+  position: relative;
+  z-index: 2;
+}

@@ -11,235 +11,115 @@ import {
 import {
   Canvas,
   useFrame,
-  useThree,
 } from "@react-three/fiber";
 
 import * as THREE from "three";
 
 /* =========================================
-   NETWORK NODE DATA
+   SHIELD GEOMETRY
 ========================================= */
 
-function createNetworkNodes() {
-  const count = 32;
-  const radius = 2.25;
+function createShieldGeometry() {
+  const shape = new THREE.Shape();
 
-  return Array.from({ length: count }, (_, i) => {
-    const phi = Math.acos(
-      1 - (2 * (i + 0.5)) / count
+  shape.moveTo(0, 2.15);
+  shape.bezierCurveTo(0.7, 1.85, 1.35, 1.55, 1.65, 1.45);
+  shape.lineTo(1.48, -0.15);
+  shape.bezierCurveTo(1.35, -1.05, 0.65, -1.75, 0, -2.05);
+  shape.bezierCurveTo(-0.65, -1.75, -1.35, -1.05, -1.48, -0.15);
+  shape.lineTo(-1.65, 1.45);
+  shape.bezierCurveTo(-1.35, 1.55, -0.7, 1.85, 0, 2.15);
+
+  return new THREE.ExtrudeGeometry(shape, {
+    depth: 0.12,
+    bevelEnabled: true,
+    bevelSegments: 3,
+    steps: 1,
+    bevelSize: 0.055,
+    bevelThickness: 0.045,
+  });
+}
+
+/* =========================================
+   DATA STREAMS
+========================================= */
+
+function createStreams() {
+  return Array.from({ length: 18 }, (_, i) => {
+    const startY = -2.8 + (i / 17) * 5.6;
+
+    const start = new THREE.Vector3(-5.5, startY, -0.5);
+    const middle = new THREE.Vector3(
+      -2.8,
+      startY * 0.72,
+      0.1
+    );
+    const end = new THREE.Vector3(
+      -0.85,
+      startY * 0.36,
+      0.1
     );
 
-    const theta = Math.PI * (1 + Math.sqrt(5)) * i;
+    const curve = new THREE.CatmullRomCurve3([
+      start,
+      middle,
+      end,
+    ]);
 
     return {
-      position: [
-        radius * Math.sin(phi) * Math.cos(theta),
-        radius * Math.cos(phi),
-        radius * Math.sin(phi) * Math.sin(theta),
-      ],
-
-      color: i % 5 === 0 ? "#ff3545" : "#4d9dff",
-
-      size: i % 5 === 0 ? 0.075 : 0.045,
+      curve,
+      color: i % 5 === 0 ? "#ff3545" : "#46a6ff",
+      speed: 0.12 + (i % 4) * 0.035,
+      offset: i / 18,
     };
   });
 }
 
-/* =========================================
-   INSTANCED NETWORK NODES
-========================================= */
+function DataStream({ stream, animate }) {
+  const particleRef = useRef();
 
-function NetworkNodes({ nodes, animate }) {
-  const meshRef = useRef();
-
-  const invalidate = useThree(
-    (state) => state.invalidate
-  );
-
-  useEffect(() => {
-    const mesh = meshRef.current;
-
-    if (!mesh) return;
-
-    const dummy = new THREE.Object3D();
-
-    nodes.forEach((node, index) => {
-      dummy.position.set(...node.position);
-      dummy.scale.setScalar(node.size);
-      dummy.updateMatrix();
-
-      mesh.setMatrixAt(index, dummy.matrix);
-
-      mesh.setColorAt(
-        index,
-        new THREE.Color(node.color)
-      );
-    });
-
-    mesh.instanceMatrix.needsUpdate = true;
-
-    if (mesh.instanceColor) {
-      mesh.instanceColor.needsUpdate = true;
-    }
-
-    invalidate();
-  }, [nodes, invalidate]);
-
-  useFrame((state, delta) => {
-    if (!animate || !meshRef.current) return;
-
-    meshRef.current.rotation.y += delta * 0.07;
-
-    meshRef.current.rotation.x =
-      Math.sin(state.clock.elapsedTime * 0.15) * 0.08;
-  });
-
-  return (
-    <instancedMesh
-      ref={meshRef}
-      args={[undefined, undefined, nodes.length]}
-      frustumCulled
-    >
-      <sphereGeometry args={[1, 6, 6]} />
-      <meshBasicMaterial toneMapped={false} />
-    </instancedMesh>
-  );
-}
-
-/* =========================================
-   NETWORK CONNECTIONS
-========================================= */
-
-function NetworkLines({ nodes }) {
   const geometry = useMemo(() => {
-    const positions = [];
-
-    const points = nodes.map(
-      (node) =>
-        new THREE.Vector3(...node.position)
+    return new THREE.TubeGeometry(
+      stream.curve,
+      48,
+      0.008,
+      4,
+      false
     );
-
-    for (let i = 0; i < points.length; i++) {
-      for (let j = i + 1; j < points.length; j++) {
-        if (points[i].distanceTo(points[j]) < 1.15) {
-          positions.push(
-            points[i].x,
-            points[i].y,
-            points[i].z,
-            points[j].x,
-            points[j].y,
-            points[j].z
-          );
-        }
-      }
-    }
-
-    const geo = new THREE.BufferGeometry();
-
-    geo.setAttribute(
-      "position",
-      new THREE.Float32BufferAttribute(positions, 3)
-    );
-
-    return geo;
-  }, [nodes]);
+  }, [stream]);
 
   useEffect(() => {
-    return () => {
-      geometry.dispose();
-    };
+    return () => geometry.dispose();
   }, [geometry]);
 
-  return (
-    <lineSegments geometry={geometry}>
-      <lineBasicMaterial
-        color="#397bcf"
-        transparent
-        opacity={0.22}
-        depthWrite={false}
-      />
-    </lineSegments>
-  );
-}
-
-/* =========================================
-   ORBIT RINGS
-========================================= */
-
-function OrbitRings({ animate }) {
-  const orbitRef = useRef();
-
-  useFrame((_, delta) => {
-    if (!animate || !orbitRef.current) return;
-
-    orbitRef.current.rotation.z += delta * 0.045;
-  });
-
-  return (
-    <group ref={orbitRef}>
-      <mesh rotation={[Math.PI / 2.5, 0.2, 0]}>
-        <torusGeometry args={[2.8, 0.012, 5, 64]} />
-        <meshBasicMaterial
-          color="#d71920"
-          transparent
-          opacity={0.7}
-        />
-      </mesh>
-
-      <mesh rotation={[0.5, Math.PI / 3, 0.5]}>
-        <torusGeometry args={[3.05, 0.009, 5, 64]} />
-        <meshBasicMaterial
-          color="#438cff"
-          transparent
-          opacity={0.55}
-        />
-      </mesh>
-
-      <mesh rotation={[1.2, 0.4, 0.8]}>
-        <torusGeometry args={[3.25, 0.008, 5, 64]} />
-        <meshBasicMaterial
-          color="#438cff"
-          transparent
-          opacity={0.3}
-        />
-      </mesh>
-    </group>
-  );
-}
-
-/* =========================================
-   CENTRAL CYBER CORE
-========================================= */
-
-function CyberCore({ animate }) {
-  const coreRef = useRef();
-
   useFrame((state) => {
-    if (!animate || !coreRef.current) return;
+    if (!animate || !particleRef.current) return;
 
-    const pulse =
-      1 +
-      Math.sin(state.clock.elapsedTime * 1.5) * 0.025;
+    const t =
+      (state.clock.elapsedTime * stream.speed +
+        stream.offset) %
+      1;
 
-    coreRef.current.scale.setScalar(pulse);
+    const point = stream.curve.getPointAt(t);
+
+    particleRef.current.position.copy(point);
   });
 
   return (
-    <group ref={coreRef}>
-      <mesh>
-        <icosahedronGeometry args={[0.65, 1]} />
+    <group>
+      <mesh geometry={geometry}>
         <meshBasicMaterial
-          color="#132e59"
-          wireframe
+          color={stream.color}
           transparent
-          opacity={0.8}
+          opacity={0.28}
+          depthWrite={false}
         />
       </mesh>
 
-      <mesh>
-        <sphereGeometry args={[0.28, 10, 10]} />
+      <mesh ref={particleRef}>
+        <sphereGeometry args={[0.035, 8, 8]} />
         <meshBasicMaterial
-          color="#d71920"
+          color={stream.color}
           toneMapped={false}
         />
       </mesh>
@@ -248,28 +128,310 @@ function CyberCore({ animate }) {
 }
 
 /* =========================================
-   MAIN SCENE
+   SECURITY SHIELD
 ========================================= */
 
-function Scene({ animate }) {
-  const nodes = useMemo(
-    () => createNetworkNodes(),
+function SecurityShield({ animate }) {
+  const shieldRef = useRef();
+  const innerRef = useRef();
+
+  const geometry = useMemo(
+    () => createShieldGeometry(),
     []
   );
 
+  const edges = useMemo(
+    () => new THREE.EdgesGeometry(geometry),
+    [geometry]
+  );
+
+  useEffect(() => {
+    return () => {
+      geometry.dispose();
+      edges.dispose();
+    };
+  }, [geometry, edges]);
+
+  useFrame((state) => {
+    if (!animate) return;
+
+    const time = state.clock.elapsedTime;
+
+    if (shieldRef.current) {
+      shieldRef.current.rotation.y =
+        Math.sin(time * 0.45) * 0.09;
+
+      shieldRef.current.rotation.x =
+        Math.sin(time * 0.35) * 0.035;
+
+      shieldRef.current.position.y =
+        Math.sin(time * 0.7) * 0.08;
+    }
+
+    if (innerRef.current) {
+      const pulse =
+        1 + Math.sin(time * 1.7) * 0.035;
+
+      innerRef.current.scale.setScalar(pulse);
+    }
+  });
+
   return (
-    <group position={[0.6, 0, 0]}>
-      <NetworkLines nodes={nodes} />
+    <group ref={shieldRef}>
+      {/* TRANSPARENT GLASS SHIELD */}
 
-      <NetworkNodes
-        nodes={nodes}
-        animate={animate}
-      />
+      <mesh
+        geometry={geometry}
+        position={[0, 0, 0]}
+      >
+        <meshPhysicalMaterial
+          color="#0b3970"
+          metalness={0.45}
+          roughness={0.2}
+          transmission={0.22}
+          transparent
+          opacity={0.72}
+          thickness={0.5}
+          side={THREE.DoubleSide}
+          depthWrite={false}
+        />
+      </mesh>
 
-      <OrbitRings animate={animate} />
+      {/* SHIELD OUTLINE */}
 
-      <CyberCore animate={animate} />
+      <lineSegments geometry={edges}>
+        <lineBasicMaterial
+          color="#42baff"
+          transparent
+          opacity={0.9}
+        />
+      </lineSegments>
+
+      {/* INNER SHIELD */}
+
+      <mesh
+        ref={innerRef}
+        position={[0, 0, 0.2]}
+      >
+        <icosahedronGeometry args={[0.66, 1]} />
+
+        <meshBasicMaterial
+          color="#1676d8"
+          wireframe
+          transparent
+          opacity={0.7}
+        />
+      </mesh>
+
+      {/* CENTRAL SECURITY CORE */}
+
+      <mesh position={[0, 0, 0.22]}>
+        <sphereGeometry args={[0.28, 24, 24]} />
+
+        <meshBasicMaterial
+          color="#d71920"
+          toneMapped={false}
+        />
+      </mesh>
+
+      {/* CORE GLOW RING */}
+
+      <mesh
+        position={[0, 0, 0.25]}
+        rotation={[0, 0, Math.PI / 4]}
+      >
+        <torusGeometry args={[0.48, 0.012, 8, 64]} />
+
+        <meshBasicMaterial
+          color="#51c8ff"
+          transparent
+          opacity={0.9}
+        />
+      </mesh>
     </group>
+  );
+}
+
+/* =========================================
+   SCANNING BEAM
+========================================= */
+
+function ScanningBeam({ animate }) {
+  const beamRef = useRef();
+  const glowRef = useRef();
+
+  useFrame((state) => {
+    if (!animate) return;
+
+    const time = state.clock.elapsedTime;
+
+    const y = Math.sin(time * 0.8) * 1.45;
+
+    if (beamRef.current) {
+      beamRef.current.position.y = y;
+    }
+
+    if (glowRef.current) {
+      glowRef.current.position.y = y;
+      glowRef.current.material.opacity =
+        0.12 + Math.sin(time * 3) * 0.04;
+    }
+  });
+
+  return (
+    <group>
+      <mesh
+        ref={beamRef}
+        position={[0, 0, 0.42]}
+      >
+        <boxGeometry args={[2.8, 0.012, 0.012]} />
+
+        <meshBasicMaterial
+          color="#ff3545"
+          toneMapped={false}
+        />
+      </mesh>
+
+      <mesh
+        ref={glowRef}
+        position={[0, 0, 0.4]}
+      >
+        <boxGeometry args={[2.8, 0.09, 0.015]} />
+
+        <meshBasicMaterial
+          color="#ff3545"
+          transparent
+          opacity={0.12}
+          depthWrite={false}
+        />
+      </mesh>
+    </group>
+  );
+}
+
+/* =========================================
+   ORBITING SECURITY RINGS
+========================================= */
+
+function SecurityRings({ animate }) {
+  const ringRef = useRef();
+
+  useFrame((_, delta) => {
+    if (!animate || !ringRef.current) return;
+
+    ringRef.current.rotation.z += delta * 0.12;
+    ringRef.current.rotation.x += delta * 0.025;
+  });
+
+  return (
+    <group ref={ringRef}>
+      <mesh rotation={[1.15, 0.2, 0.15]}>
+        <torusGeometry args={[2.55, 0.009, 5, 100]} />
+
+        <meshBasicMaterial
+          color="#2388ff"
+          transparent
+          opacity={0.48}
+        />
+      </mesh>
+
+      <mesh rotation={[0.45, 1.1, 0.4]}>
+        <torusGeometry args={[2.8, 0.012, 5, 100]} />
+
+        <meshBasicMaterial
+          color="#d71920"
+          transparent
+          opacity={0.65}
+        />
+      </mesh>
+
+      <mesh rotation={[1.3, 0.8, 0.7]}>
+        <torusGeometry args={[3.05, 0.006, 5, 100]} />
+
+        <meshBasicMaterial
+          color="#48baff"
+          transparent
+          opacity={0.28}
+        />
+      </mesh>
+    </group>
+  );
+}
+
+/* =========================================
+   FLOATING PARTICLES
+========================================= */
+
+function SecurityParticles({ animate }) {
+  const particlesRef = useRef();
+
+  const count = 100;
+
+  const positions = useMemo(() => {
+    const values = new Float32Array(count * 3);
+
+    for (let i = 0; i < count; i++) {
+      values[i * 3] = (Math.random() - 0.5) * 11;
+      values[i * 3 + 1] = (Math.random() - 0.5) * 6;
+      values[i * 3 + 2] = (Math.random() - 0.5) * 2;
+    }
+
+    return values;
+  }, []);
+
+  useFrame((_, delta) => {
+    if (!animate || !particlesRef.current) return;
+
+    particlesRef.current.rotation.y += delta * 0.015;
+    particlesRef.current.rotation.z += delta * 0.008;
+  });
+
+  return (
+    <points ref={particlesRef}>
+      <bufferGeometry>
+        <bufferAttribute
+          attach="attributes-position"
+          args={[positions, 3]}
+        />
+      </bufferGeometry>
+
+      <pointsMaterial
+        color="#5bbcff"
+        size={0.022}
+        transparent
+        opacity={0.65}
+        sizeAttenuation
+        depthWrite={false}
+      />
+    </points>
+  );
+}
+
+/* =========================================
+   MAIN SCENE
+========================================= */
+
+function Scene({ animate, streams }) {
+  return (
+    <>
+       <group position={[2.2, 0, 0]}>
+        {streams.map((stream, index) => (
+          <DataStream
+            key={index}
+            stream={stream}
+            animate={animate}
+          />
+        ))}
+
+        <SecurityRings animate={animate} />
+
+        <SecurityShield animate={animate} />
+
+        <ScanningBeam animate={animate} />
+      </group>
+
+      <SecurityParticles animate={animate} />
+    </>
   );
 }
 
@@ -282,8 +444,9 @@ export default function Hero3D() {
 
   const [visible, setVisible] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-
   const [reducedMotion, setReducedMotion] = useState(false);
+
+  const streams = useMemo(() => createStreams(), []);
 
   /* DEVICE SETTINGS */
 
@@ -331,9 +494,7 @@ export default function Hero3D() {
 
     observer.observe(element);
 
-    return () => {
-      observer.disconnect();
-    };
+    return () => observer.disconnect();
   }, []);
 
   const animate = !isMobile && !reducedMotion;
@@ -341,32 +502,32 @@ export default function Hero3D() {
   return (
     <div
       ref={containerRef}
+      aria-hidden="true"
       style={{
         position: "absolute",
         inset: 0,
         overflow: "hidden",
         pointerEvents: "none",
-        zIndex: -1,
+        zIndex: 0,
 
         background: `
           radial-gradient(
-            circle at 72% 48%,
-            rgba(20, 48, 90, 0.42),
-            transparent 38%
+            ellipse at 72% 48%,
+            rgba(13, 67, 125, 0.28),
+            transparent 48%
           ),
           linear-gradient(
-            135deg,
-            #03050A,
-            #080F30
+            125deg,
+            #020b1c 0%,
+            #07172b 55%,
+            #030a17 100%
           )
         `,
       }}
     >
-      {/* 3D CANVAS */}
-
       {visible && (
         <Canvas
-          dpr={isMobile ? 1 : [1, 1.15]}
+          dpr={isMobile ? 1 : [1, 1.25]}
           frameloop={animate ? "always" : "demand"}
           gl={{
             alpha: true,
@@ -376,11 +537,14 @@ export default function Hero3D() {
             depth: true,
           }}
           camera={{
-            position: [0, 0, 9],
+            position: [0, 0, 10],
             fov: 40,
           }}
         >
-          <Scene animate={animate} />
+          <Scene
+            animate={animate}
+            streams={streams}
+          />
         </Canvas>
       )}
 
@@ -392,12 +556,20 @@ export default function Hero3D() {
           inset: 0,
           pointerEvents: "none",
 
-          background:
-            "linear-gradient(90deg, #03050A 0%, rgba(3,5,10,0.96) 35%, rgba(3,5,10,0.45) 65%, transparent 100%)",
+          background: `
+            linear-gradient(
+              90deg,
+              #020b1c 0%,
+              rgba(2,11,28,0.97) 28%,
+              rgba(2,11,28,0.72) 48%,
+              rgba(2,11,28,0.12) 78%,
+              transparent 100%
+            )
+          `,
         }}
       />
 
-      {/* SUBTLE GRID */}
+      {/* SUBTLE TECH GRID */}
 
       <div
         style={{
@@ -408,32 +580,48 @@ export default function Hero3D() {
 
           backgroundImage: `
             linear-gradient(
-              rgba(74,122,255,0.12) 1px,
+              rgba(67,153,255,0.2) 1px,
               transparent 1px
             ),
             linear-gradient(
               90deg,
-              rgba(74,122,255,0.12) 1px,
+              rgba(67,153,255,0.2) 1px,
               transparent 1px
             )
           `,
 
-          backgroundSize: "55px 55px",
+          backgroundSize: "58px 58px",
         }}
       />
 
-      {/* RED AMBIENT GLOW */}
+      {/* RED AMBIENT LIGHT */}
 
       <div
         style={{
           position: "absolute",
           right: "12%",
           top: "35%",
-          width: "280px",
-          height: "280px",
+          width: "250px",
+          height: "250px",
           borderRadius: "50%",
-          background: "rgba(215,25,32,0.07)",
-          filter: "blur(90px)",
+          background: "rgba(215,25,32,0.12)",
+          filter: "blur(100px)",
+          pointerEvents: "none",
+        }}
+      />
+
+      {/* BLUE AMBIENT LIGHT */}
+
+      <div
+        style={{
+          position: "absolute",
+          right: "28%",
+          bottom: "8%",
+          width: "280px",
+          height: "180px",
+          borderRadius: "50%",
+          background: "rgba(25,115,220,0.12)",
+          filter: "blur(100px)",
           pointerEvents: "none",
         }}
       />

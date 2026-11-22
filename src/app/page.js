@@ -181,8 +181,6 @@ export default function Home() {
          <ServicesSection />
 
       </main>
-
-
       <Footer />
     </>
   );
