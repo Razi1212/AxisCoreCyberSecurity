@@ -2,7 +2,7 @@
 import ServicesClient from "./ServicesClient";
 
 export const metadata = {
-  title: "Cybersecurity & IT Services | AXISCORE",
+  title: "Axis Core Solutions | Cybersecurity & Technology Solutions",
   description:
     "Explore AXISCORE's cybersecurity, penetration testing, managed security, network protection, cloud security, AI analytics, digital workspace and application development services.",
   keywords: [

@@ -1,3 +1,4 @@
+
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
@@ -11,18 +12,22 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-
 export const metadata = {
   title: "Axis Core Solutions | Cybersecurity & Technology Solutions",
   description:
     "AXISCORE delivers cybersecurity, cloud security, infrastructure and digital transformation solutions.",
   icons: {
-    icon: [{ url: "/icon.png", type: "image/png" }],
-    shortcut: ["/icon.png"],
-    apple: [{ url: "/icon.png" }],
+    icon: [
+      {
+        url: "/icon.png?v=2",
+        type: "image/png",
+        sizes: "32x32",
+      },
+    ],
+    shortcut: "/icon.png?v=2",
+    apple: "/icon.png?v=2",
   },
 };
-
 
 export default function RootLayout({ children }) {
   return (
