@@ -49,11 +49,13 @@ function createStreams() {
     const startY = -2.8 + (i / 17) * 5.6;
 
     const start = new THREE.Vector3(-5.5, startY, -0.5);
+
     const middle = new THREE.Vector3(
       -2.8,
       startY * 0.72,
       0.1
     );
+
     const end = new THREE.Vector3(
       -0.85,
       startY * 0.36,
@@ -264,7 +266,6 @@ function ScanningBeam({ animate }) {
     if (!animate) return;
 
     const time = state.clock.elapsedTime;
-
     const y = Math.sin(time * 0.8) * 1.45;
 
     if (beamRef.current) {
@@ -414,7 +415,7 @@ function SecurityParticles({ animate }) {
 function Scene({ animate, streams }) {
   return (
     <>
-       <group position={[2.2, 0, 0]}>
+      <group position={[2.2, 0, 0]}>
         {streams.map((stream, index) => (
           <DataStream
             key={index}
@@ -510,19 +511,11 @@ export default function Hero3D() {
         pointerEvents: "none",
         zIndex: 0,
 
-        background: `
-          radial-gradient(
-            ellipse at 72% 48%,
-            rgba(13, 67, 125, 0.28),
-            transparent 48%
-          ),
-          linear-gradient(
-            125deg,
-            #020b1c 0%,
-            #07172b 55%,
-            #030a17 100%
-          )
-        `,
+        /* IMPORTANT:
+           The hero section now owns the background.
+           This wrapper stays transparent. */
+
+        background: "transparent",
       }}
     >
       {visible && (
@@ -550,24 +543,25 @@ export default function Hero3D() {
 
       {/* LEFT TEXT READABILITY */}
 
-      <div
-        style={{
-          position: "absolute",
-          inset: 0,
-          pointerEvents: "none",
+{/* LEFT TEXT READABILITY */}
 
-          background: `
-            linear-gradient(
-              90deg,
-              #020b1c 0%,
-              rgba(2,11,28,0.97) 28%,
-              rgba(2,11,28,0.72) 48%,
-              rgba(2,11,28,0.12) 78%,
-              transparent 100%
-            )
-          `,
-        }}
-      />
+<div
+  style={{
+    position: "absolute",
+    inset: 0,
+    pointerEvents: "none",
+    background: `
+      linear-gradient(
+        90deg,
+        rgba(16, 28, 44, 0.55) 0%,
+        rgba(16, 28, 44, 0.40) 30%,
+        rgba(16, 28, 44, 0.18) 55%,
+        transparent 100%
+      )
+    `,
+  }}
+/>
+
 
       {/* SUBTLE TECH GRID */}
 
