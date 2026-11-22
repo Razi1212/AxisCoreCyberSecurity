@@ -1,6 +1,4 @@
-
 "use client";
-
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -18,8 +16,6 @@ export default function Navbar() {
   const pathname = usePathname();
 
   const closeMenu = () => setMenuOpen(false);
-
-  // Force scroll to the top whenever the page changes
   useEffect(() => {
     window.scrollTo({
       top: 0,

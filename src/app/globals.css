@@ -1067,11 +1067,6 @@ p {
 }
 
 /* =====================================
-   10. THE 3D DARK HERO
-===================================== */
-
-
-/* =====================================
    10. THE 3D GRAPHITE BLUE HERO
 ===================================== */
 
@@ -1237,118 +1232,139 @@ p {
 }
 
 @media (max-width: 760px) {
-  .navbar-container {
-    min-height: 72px;
-    padding: 0 22px;
-  }
-
-  .navbar-links,
-  .navbar-container > .navbar-cta {
-    display: none;
-  }
-
-  .navbar-menu-button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 42px;
-    height: 42px;
-  }
-
-  .mobile-nav {
-    display: flex;
-    flex-direction: column;
-    position: absolute;
-    top: 100%;
-    left: 0;
-    width: 100%;
-    padding: 0 22px;
-    background: #FFFFFF;
-    box-shadow: 0 15px 25px rgba(15, 23, 42, 0.12);
-    max-height: 0;
-    overflow: hidden;
-    visibility: hidden;
-    transition: all 0.3s ease;
-  }
-
-  .mobile-nav-open {
-    max-height: 360px;
-    padding-top: 12px;
-    padding-bottom: 22px;
-    visibility: visible;
-  }
-
-  .hero-section,
-  .hero-section-dark {
-    grid-template-columns: 1fr;
-    padding: 60px 22px;
-  }
-
-  .hero-section-dark .hero-copy h1 {
-    font-size: clamp(30px, 7.5vw, 40px);
-    letter-spacing: -1.2px;
-  }
-
-  .hero-visual-spacer {
-    display: none;
-  }
-
-  .hero-actions {
-    flex-direction: column;
-    width: 100%;
-  }
-
-  .hero-actions .button {
-    width: 100%;
-  }
-
-  .trust-points {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-  }
-
-  .service-grid,
-  .industry-grid,
-  .process-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .section-heading {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .marquee-heading p {
-    font-size: 9px;
-  }
-
-  .capability-grid {
-    grid-template-columns: 1fr;
-  }
+  
+/* PREMIUM MOBILE NAVBAR */
+.navbar-container {
+  min-height: 76px;
+  padding: 0 20px;
+  background: linear-gradient(135deg, #ffffff 0%, #f7f9fc 100%);
+  border-bottom: 1px solid rgba(11, 20, 63, 0.08);
+  box-shadow: 0 5px 22px rgba(11, 20, 63, 0.07);
+  position: relative;
+  z-index: 1000;
 }
 
-@media (max-width: 480px) {
-  .navbar-brand-name {
-    font-size: 21px;
-  }
-
-  .pillars-grid {
-    grid-template-columns: 1fr 1fr;
-  }
-
-  .marquee-index {
-    display: none;
-  }
-
-  .marquee-text {
-    font-size: 10px;
-  }
-
-  .hero-section-dark .hero-copy h1 {
-    font-size: 32px;
-    letter-spacing: -1px;
-  }
+.navbar-links,
+.navbar-container > .navbar-cta {
+  display: none;
 }
+
+/* Menu button */
+.navbar-menu-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 46px;
+  border: 1px solid rgba(215, 25, 32, 0.18);
+  border-radius: 14px;
+  background: #fff5f5;
+  color: #D71920;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.navbar-menu-button:hover {
+  background: #D71920;
+  color: #ffffff;
+  box-shadow: 0 6px 16px rgba(215, 25, 32, 0.2);
+  transform: translateY(-2px);
+}
+
+/* Mobile dropdown */
+.mobile-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  position: absolute;
+  top: calc(100% + 1px);
+  left: 0;
+  width: 100%;
+  padding: 0 20px;
+  background: linear-gradient(180deg, #ffffff 0%, #f8faff 100%);
+  border-bottom: 1px solid #e5ebf3;
+  border-radius: 0 0 20px 20px;
+  box-shadow: 0 18px 35px rgba(11, 20, 63, 0.13);
+  max-height: 0;
+  overflow: hidden;
+  visibility: hidden;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition:
+    max-height 0.4s ease,
+    opacity 0.3s ease,
+    transform 0.3s ease,
+    padding 0.3s ease;
+}
+
+.mobile-nav-open {
+  max-height: 420px;
+  padding: 20px;
+  visibility: visible;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Individual navigation links */
+.mobile-nav a {
+  display: flex;
+  align-items: center;
+  min-height: 50px;
+  padding: 0 16px;
+  border: 1px solid transparent;
+  border-radius: 12px;
+  color: #0B143F;
+  font-size: 15px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.25s ease;
+}
+
+.mobile-nav a:hover {
+  background: #f1f4fa;
+  border-color: #e5ebf3;
+  color: #D71920;
+  padding-left: 21px;
+}
+
+/* Active page */
+.mobile-nav a.active {
+  background: #fff1f1;
+  color: #D71920;
+  border-color: rgba(215, 25, 32, 0.12);
+  box-shadow: inset 3px 0 0 #D71920;
+}
+
+/* Mobile contact button */
+.mobile-nav .navbar-cta,
+.mobile-nav .mobile-nav-cta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 50px;
+  margin-top: 8px;
+  padding: 0 20px;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #D71920, #a90f17);
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 700;
+  text-decoration: none;
+  box-shadow: 0 7px 18px rgba(215, 25, 32, 0.22);
+  transition: all 0.25s ease;
+}
+
+.mobile-nav .navbar-cta:hover,
+.mobile-nav .mobile-nav-cta:hover {
+  background: linear-gradient(135deg, #b9141b, #8f0d14);
+  color: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 22px rgba(215, 25, 32, 0.28);
+}
+
+  }
 
 /* =====================================
    12. REDUCED MOTION ACCESSIBILITY
@@ -1376,4 +1392,5 @@ p {
   position: relative;
   z-index: 2;
 }
+
 
