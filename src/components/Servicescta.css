@@ -13,7 +13,25 @@
   isolation: isolate;
   overflow: hidden;
   padding: 100px 7%;
-  background: var(--cta-bg);
+
+  background:
+    radial-gradient(
+      ellipse at 82% 22%,
+      rgba(215, 25, 32, 0.13),
+      transparent 35%
+    ),
+    radial-gradient(
+      ellipse at 12% 85%,
+      rgba(37, 99, 235, 0.07),
+      transparent 35%
+    ),
+    linear-gradient(
+      135deg,
+      #101116 0%,
+      #17191f 48%,
+      #0d0f14 100%
+    );
+
   color: var(--cta-white);
   font-family: "DM Sans", sans-serif;
 }
@@ -34,28 +52,96 @@
   position: absolute;
   inset: 0;
   z-index: -1;
-  opacity: 0.12;
+  opacity: 0.2;
   pointer-events: none;
 
   background-image:
     linear-gradient(
-      rgba(255,255,255,0.035) 1px,
+      rgba(255,255,255,0.045) 1px,
       transparent 1px
     ),
     linear-gradient(
       90deg,
-      rgba(255,255,255,0.035) 1px,
+      rgba(255,255,255,0.045) 1px,
       transparent 1px
     );
 
-  background-size: 70px 70px;
+  background-size: 65px 65px;
 
-  mask-image: linear-gradient(
-    to right,
-    transparent,
-    black 35%,
-    black
+  mask-image: radial-gradient(
+    ellipse at 65% 45%,
+    black 10%,
+    transparent 85%
   );
+}
+
+/* =========================================
+   AMBIENT BACKGROUND LIGHTING
+========================================= */
+
+.services-cta::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  top: 5%;
+  right: -180px;
+  width: 550px;
+  height: 550px;
+  border-radius: 50%;
+
+  background: radial-gradient(
+    circle,
+    rgba(215,25,32,0.13),
+    rgba(215,25,32,0.035) 40%,
+    transparent 70%
+  );
+
+  filter: blur(35px);
+  pointer-events: none;
+}
+
+/* Moving cinematic light beam */
+
+.services-cta::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  left: -40%;
+  width: 35%;
+  height: 100%;
+
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(215,25,32,0.035),
+    rgba(255,255,255,0.025),
+    transparent
+  );
+
+  transform: skewX(-20deg);
+  animation: axisAmbientLight 12s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes axisAmbientLight {
+  0%, 100% {
+    left: -40%;
+    opacity: 0;
+  }
+
+  15% {
+    opacity: 1;
+  }
+
+  65% {
+    opacity: 0.7;
+  }
+
+  85% {
+    left: 110%;
+    opacity: 0;
+  }
 }
 
 /* =========================================
@@ -166,6 +252,7 @@
   height: 46px;
   color: #fff;
   background: var(--axis-red);
+
   transition:
     transform 0.3s ease,
     background 0.3s ease;
@@ -201,8 +288,9 @@
 
   background: radial-gradient(
     circle,
-    rgba(215,25,32,0.12),
-    transparent 70%
+    rgba(215,25,32,0.2),
+    rgba(215,25,32,0.045) 40%,
+    transparent 72%
   );
 
   pointer-events: none;
@@ -319,7 +407,7 @@
 }
 
 /* =========================================
-   NEW TECHNOLOGY EXPERTISE SECTION
+   TECHNOLOGY EXPERTISE SECTION
 ========================================= */
 
 .services-cta__expertise {
@@ -371,7 +459,17 @@
   min-height: 190px;
   padding: 26px 22px;
   border-right: 1px solid rgba(255,255,255,0.12);
-  transition: background 0.3s ease;
+
+  background: linear-gradient(
+    145deg,
+    rgba(255,255,255,0.025),
+    rgba(255,255,255,0.005)
+  );
+
+  transition:
+    background 0.35s ease,
+    box-shadow 0.35s ease,
+    transform 0.35s ease;
 }
 
 .services-cta__expertise-item:last-child {
@@ -379,12 +477,22 @@
 }
 
 .services-cta__expertise-item:hover {
-  background: rgba(215,25,32,0.055);
+  background: linear-gradient(
+    145deg,
+    rgba(215,25,32,0.12),
+    rgba(255,255,255,0.015)
+  );
+
+  box-shadow: inset 0 2px 0 rgba(215,25,32,0.7);
 }
 
 .services-cta__expertise-item > svg:first-child {
   color: var(--axis-red);
   margin-bottom: 20px;
+
+  filter: drop-shadow(
+    0 0 8px rgba(215,25,32,0.3)
+  );
 }
 
 .services-cta__expertise-item > span {
@@ -447,7 +555,7 @@
 }
 
 /* =========================================
-   ANIMATION
+   ARCHITECTURE ANIMATION
 ========================================= */
 
 @keyframes architectureFloat {
@@ -461,286 +569,7 @@
 }
 
 /* =========================================
-   TABLET
-========================================= */
-
-@media (max-width: 900px) {
-  .services-cta {
-    padding: 85px 6%;
-  }
-
-  .services-cta__main {
-    grid-template-columns: 1fr;
-    gap: 25px;
-  }
-
-  .services-cta__visual {
-    min-height: 350px;
-  }
-
-  .services-cta__expertise-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .services-cta__expertise-item:nth-child(2) {
-    border-right: none;
-  }
-
-  .services-cta__expertise-item:nth-child(-n+2) {
-    border-bottom: 1px solid rgba(255,255,255,0.12);
-  }
-}
-
-/* =========================================
-   MOBILE
-========================================= */
-
-@media (max-width: 600px) {
-  .services-cta {
-    padding: 70px 6%;
-  }
-
-  .services-cta__main {
-    padding: 48px 0;
-  }
-
-  .services-cta__copy h2 {
-    font-size: var(--axis-font-section);
-    letter-spacing: -0.8px;
-  }
-
-  .services-cta__copy p {
-    font-size: var(--axis-font-body);
-  }
-
-  .services-cta__visual {
-    min-height: 300px;
-  }
-
-  .services-cta__architecture {
-    transform: scale(0.85);
-    transform-origin: center;
-  }
-
-  .services-cta__expertise {
-    padding: 35px 0 40px;
-  }
-
-  .services-cta__expertise-heading {
-    align-items: flex-start;
-    flex-direction: column;
-  }
-
-  .services-cta__expertise-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .services-cta__expertise-item {
-    min-height: 165px;
-    border-right: none;
-    border-bottom: 1px solid rgba(255,255,255,0.12);
-  }
-
-  .services-cta__expertise-item:last-child {
-    border-bottom: none;
-  }
-
-  .services-cta__footer {
-    justify-content: flex-start;
-    gap: 13px;
-    line-height: 1.8;
-  }
-}
-
-/* =========================================
-   ACCESSIBILITY
-========================================= */
-
-@media (prefers-reduced-motion: reduce) {
-  .services-cta__architecture {
-    animation: none;
-  }
-
-  .services-cta__link-icon,
-  .services-cta__expertise-item,
-  .services-cta__expertise-item .expertise-arrow {
-    transition: none;
-  }
-}
-
-
-/* =========================================
-   AXISCORE PREMIUM ATMOSPHERIC BACKGROUND
-========================================= */
-
-.services-cta {
-  background:
-    radial-gradient(
-      ellipse at 82% 22%,
-      rgba(215, 25, 32, 0.13),
-      transparent 35%
-    ),
-    radial-gradient(
-      ellipse at 12% 85%,
-      rgba(37, 99, 235, 0.07),
-      transparent 35%
-    ),
-    linear-gradient(
-      135deg,
-      #101116 0%,
-      #17191f 48%,
-      #0d0f14 100%
-    );
-}
-
-/* Enhanced technical grid */
-
-.services-cta__texture {
-  opacity: 0.2;
-
-  background-image:
-    linear-gradient(
-      rgba(255,255,255,0.045) 1px,
-      transparent 1px
-    ),
-    linear-gradient(
-      90deg,
-      rgba(255,255,255,0.045) 1px,
-      transparent 1px
-    );
-
-  background-size: 65px 65px;
-
-  mask-image: radial-gradient(
-    ellipse at 65% 45%,
-    black 10%,
-    transparent 85%
-  );
-}
-
-/* Ambient red lighting */
-
-.services-cta::before {
-  content: "";
-  position: absolute;
-  z-index: -1;
-  top: 5%;
-  right: -180px;
-  width: 550px;
-  height: 550px;
-  border-radius: 50%;
-
-  background: radial-gradient(
-    circle,
-    rgba(215,25,32,0.13),
-    rgba(215,25,32,0.035) 40%,
-    transparent 70%
-  );
-
-  filter: blur(35px);
-  pointer-events: none;
-}
-
-/* Moving cinematic light beam */
-
-.services-cta::after {
-  content: "";
-  position: absolute;
-  z-index: -1;
-  top: 0;
-  left: -40%;
-  width: 35%;
-  height: 100%;
-
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(215,25,32,0.035),
-    rgba(255,255,255,0.025),
-    transparent
-  );
-
-  transform: skewX(-20deg);
-  animation: axisAmbientLight 12s ease-in-out infinite;
-  pointer-events: none;
-}
-
-@keyframes axisAmbientLight {
-  0%, 100% {
-    left: -40%;
-    opacity: 0;
-  }
-
-  15% {
-    opacity: 1;
-  }
-
-  65% {
-    opacity: 0.7;
-  }
-
-  85% {
-    left: 110%;
-    opacity: 0;
-  }
-}
-
-/* Architectural visual enhancement */
-
-.services-cta__visual::before {
-  background: radial-gradient(
-    circle,
-    rgba(215,25,32,0.2),
-    rgba(215,25,32,0.045) 40%,
-    transparent 72%
-  );
-}
-
-/* Expertise cards metallic background */
-
-.services-cta__expertise-item {
-  background: linear-gradient(
-    145deg,
-    rgba(255,255,255,0.025),
-    rgba(255,255,255,0.005)
-  );
-
-  transition:
-    background 0.35s ease,
-    box-shadow 0.35s ease,
-    transform 0.35s ease;
-}
-
-.services-cta__expertise-item:hover {
-  background: linear-gradient(
-    145deg,
-    rgba(215,25,32,0.12),
-    rgba(255,255,255,0.015)
-  );
-
-  box-shadow: inset 0 2px 0 rgba(215,25,32,0.7);
-}
-
-/* Soft red glow on icons */
-
-.services-cta__expertise-item > svg:first-child {
-  filter: drop-shadow(
-    0 0 8px rgba(215,25,32,0.3)
-  );
-}
-
-/* Reduced motion accessibility */
-
-@media (prefers-reduced-motion: reduce) {
-  .services-cta::after {
-    animation: none;
-  }
-}
-
-
-
-/* =========================================
-   AXISCORE FAQ SECTION
+   FAQ SECTION
 ========================================= */
 
 .services-cta__faq {
@@ -749,7 +578,7 @@
   border-top: 1px solid rgba(255,255,255,0.13);
 }
 
-/* Header */
+/* FAQ Header */
 
 .services-cta__faq-header {
   display: grid;
@@ -780,7 +609,7 @@
   line-height: 1.8;
 }
 
-/* Header aside */
+/* FAQ Header Aside */
 
 .services-cta__faq-aside {
   padding: 22px;
@@ -817,7 +646,7 @@
   color: var(--axis-red);
 }
 
-/* FAQ list */
+/* FAQ List */
 
 .services-cta__faq-list {
   border-top: 1px solid rgba(255,255,255,0.15);
@@ -868,7 +697,7 @@
   color: #ffffff;
 }
 
-/* Plus / Minus icon */
+/* Plus / Minus Icon */
 
 .services-cta__faq-toggle {
   position: relative;
@@ -876,6 +705,7 @@
   height: 32px;
   border: 1px solid rgba(255,255,255,0.2);
   border-radius: 50%;
+
   transition:
     background 0.3s ease,
     border-color 0.3s ease,
@@ -899,7 +729,7 @@
   transition: transform 0.3s ease;
 }
 
-/* Open state */
+/* FAQ Open State */
 
 .services-cta__faq-item[open] summary {
   background: rgba(215,25,32,0.035);
@@ -916,7 +746,7 @@
   transform: translate(-50%, -50%) rotate(0deg);
 }
 
-/* Answer */
+/* FAQ Answer */
 
 .services-cta__faq-answer {
   max-width: 750px;
@@ -939,7 +769,7 @@
   }
 }
 
-/* Bottom CTA */
+/* FAQ Bottom CTA */
 
 .services-cta__faq-bottom {
   display: flex;
@@ -972,10 +802,35 @@
 }
 
 /* =========================================
-   TABLET
+   TABLET RESPONSIVE
 ========================================= */
 
 @media (max-width: 900px) {
+  .services-cta {
+    padding: 85px 6%;
+  }
+
+  .services-cta__main {
+    grid-template-columns: 1fr;
+    gap: 25px;
+  }
+
+  .services-cta__visual {
+    min-height: 350px;
+  }
+
+  .services-cta__expertise-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .services-cta__expertise-item:nth-child(2) {
+    border-right: none;
+  }
+
+  .services-cta__expertise-item:nth-child(-n+2) {
+    border-bottom: 1px solid rgba(255,255,255,0.12);
+  }
+
   .services-cta__faq-header {
     grid-template-columns: 1fr;
     gap: 25px;
@@ -987,10 +842,67 @@
 }
 
 /* =========================================
-   MOBILE
+   MOBILE RESPONSIVE
 ========================================= */
 
 @media (max-width: 600px) {
+  .services-cta {
+    padding: 70px 6%;
+  }
+
+  .services-cta__main {
+    padding: 48px 0;
+  }
+
+  .services-cta__copy h2 {
+    font-size: var(--axis-font-section);
+    letter-spacing: -0.8px;
+  }
+
+  .services-cta__copy p {
+    font-size: var(--axis-font-body);
+  }
+
+  .services-cta__visual {
+    min-height: 300px;
+  }
+
+  .services-cta__architecture {
+    transform-origin: center;
+    animation-name: architectureFloatMobile;
+  }
+
+  .services-cta__expertise {
+    padding: 35px 0 40px;
+  }
+
+  .services-cta__expertise-heading {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .services-cta__expertise-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .services-cta__expertise-item {
+    min-height: 165px;
+    border-right: none;
+    border-bottom: 1px solid rgba(255,255,255,0.12);
+  }
+
+  .services-cta__expertise-item:last-child {
+    border-bottom: none;
+  }
+
+  .services-cta__footer {
+    justify-content: flex-start;
+    gap: 13px;
+    line-height: 1.8;
+  }
+
+  /* FAQ Mobile */
+
   .services-cta__faq {
     padding: 60px 0 45px;
   }
@@ -1030,15 +942,38 @@
   }
 }
 
-/* Accessibility */
+/* Mobile architecture animation */
+
+@keyframes architectureFloatMobile {
+  0%, 100% {
+    transform: translateY(0) rotateX(0deg) scale(0.85);
+  }
+
+  50% {
+    transform: translateY(-9px) rotateX(2deg) scale(0.85);
+  }
+}
+
+/* =========================================
+   ACCESSIBILITY - REDUCED MOTION
+========================================= */
 
 @media (prefers-reduced-motion: reduce) {
-  .services-cta__faq-answer {
+  .services-cta::after,
+  .services-cta__architecture {
     animation: none;
   }
 
+  .services-cta__link-icon,
+  .services-cta__expertise-item,
+  .services-cta__expertise-item .expertise-arrow,
+  .services-cta__faq-contact,
   .services-cta__faq-item *,
   .services-cta__faq-bottom a {
     transition: none;
+  }
+
+  .services-cta__faq-answer {
+    animation: none;
   }
 }

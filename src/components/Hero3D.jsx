@@ -77,18 +77,24 @@ function createStreams() {
   });
 }
 
+/* =========================================
+   DATA STREAMS
+========================================= */
+
 function DataStream({ stream, animate }) {
   const particleRef = useRef();
 
-  const geometry = useMemo(() => {
-    return new THREE.TubeGeometry(
-      stream.curve,
-      48,
-      0.008,
-      4,
-      false
-    );
-  }, [stream]);
+  const geometry = useMemo(
+    () =>
+      new THREE.TubeGeometry(
+        stream.curve,
+        48,
+        0.008,
+        4,
+        false
+      ),
+    [stream]
+  );
 
   useEffect(() => {
     return () => geometry.dispose();
@@ -102,9 +108,9 @@ function DataStream({ stream, animate }) {
         stream.offset) %
       1;
 
-    const point = stream.curve.getPointAt(t);
-
-    particleRef.current.position.copy(point);
+    particleRef.current.position.copy(
+      stream.curve.getPointAt(t)
+    );
   });
 
   return (
@@ -180,12 +186,7 @@ function SecurityShield({ animate }) {
 
   return (
     <group ref={shieldRef}>
-      {/* TRANSPARENT GLASS SHIELD */}
-
-      <mesh
-        geometry={geometry}
-        position={[0, 0, 0]}
-      >
+      <mesh geometry={geometry}>
         <meshPhysicalMaterial
           color="#0b3970"
           metalness={0.45}
@@ -199,8 +200,6 @@ function SecurityShield({ animate }) {
         />
       </mesh>
 
-      {/* SHIELD OUTLINE */}
-
       <lineSegments geometry={edges}>
         <lineBasicMaterial
           color="#42baff"
@@ -208,8 +207,6 @@ function SecurityShield({ animate }) {
           opacity={0.9}
         />
       </lineSegments>
-
-      {/* INNER SHIELD */}
 
       <mesh
         ref={innerRef}
@@ -225,8 +222,6 @@ function SecurityShield({ animate }) {
         />
       </mesh>
 
-      {/* CENTRAL SECURITY CORE */}
-
       <mesh position={[0, 0, 0.22]}>
         <sphereGeometry args={[0.28, 24, 24]} />
 
@@ -235,8 +230,6 @@ function SecurityShield({ animate }) {
           toneMapped={false}
         />
       </mesh>
-
-      {/* CORE GLOW RING */}
 
       <mesh
         position={[0, 0, 0.25]}
@@ -311,7 +304,7 @@ function ScanningBeam({ animate }) {
 }
 
 /* =========================================
-   ORBITING SECURITY RINGS
+   SECURITY RINGS
 ========================================= */
 
 function SecurityRings({ animate }) {
@@ -498,7 +491,7 @@ export default function Hero3D() {
     return () => observer.disconnect();
   }, []);
 
-  const animate = !isMobile && !reducedMotion;
+  const animate = visible && !isMobile && !reducedMotion;
 
   return (
     <div
@@ -510,58 +503,48 @@ export default function Hero3D() {
         overflow: "hidden",
         pointerEvents: "none",
         zIndex: 0,
-
-        /* IMPORTANT:
-           The hero section now owns the background.
-           This wrapper stays transparent. */
-
         background: "transparent",
       }}
     >
-      {visible && (
-        <Canvas
-          dpr={isMobile ? 1 : [1, 1.25]}
-          frameloop={animate ? "always" : "demand"}
-          gl={{
-            alpha: true,
-            antialias: false,
-            powerPreference: "low-power",
-            stencil: false,
-            depth: true,
-          }}
-          camera={{
-            position: [0, 0, 10],
-            fov: 40,
-          }}
-        >
-          <Scene
-            animate={animate}
-            streams={streams}
-          />
-        </Canvas>
-      )}
+      <Canvas
+        dpr={isMobile ? 1 : [1, 1.25]}
+        frameloop={animate ? "always" : "demand"}
+        gl={{
+          alpha: true,
+          antialias: false,
+          powerPreference: "low-power",
+          stencil: false,
+          depth: true,
+        }}
+        camera={{
+          position: [0, 0, 10],
+          fov: 40,
+        }}
+      >
+        <Scene
+          animate={animate}
+          streams={streams}
+        />
+      </Canvas>
 
       {/* LEFT TEXT READABILITY */}
 
-{/* LEFT TEXT READABILITY */}
-
-<div
-  style={{
-    position: "absolute",
-    inset: 0,
-    pointerEvents: "none",
-    background: `
-      linear-gradient(
-        90deg,
-        rgba(16, 28, 44, 0.55) 0%,
-        rgba(16, 28, 44, 0.40) 30%,
-        rgba(16, 28, 44, 0.18) 55%,
-        transparent 100%
-      )
-    `,
-  }}
-/>
-
+      <div
+        style={{
+          position: "absolute",
+          inset: 0,
+          pointerEvents: "none",
+          background: `
+            linear-gradient(
+              90deg,
+              rgba(16, 28, 44, 0.55) 0%,
+              rgba(16, 28, 44, 0.40) 30%,
+              rgba(16, 28, 44, 0.18) 55%,
+              transparent 100%
+            )
+          `,
+        }}
+      />
 
       {/* SUBTLE TECH GRID */}
 
@@ -571,7 +554,6 @@ export default function Hero3D() {
           inset: 0,
           pointerEvents: "none",
           opacity: 0.12,
-
           backgroundImage: `
             linear-gradient(
               rgba(67,153,255,0.2) 1px,
@@ -583,7 +565,6 @@ export default function Hero3D() {
               transparent 1px
             )
           `,
-
           backgroundSize: "58px 58px",
         }}
       />
