@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 export const metadata = {
   title: "Axis Core Solutions | Cybersecurity & Technology Solutions",
   description:
-    "AXISCORE delivers cybersecurity, cloud security, infrastructure and digital transformation solutions.",
+  "AXISCORE is a cybersecurity-focused technology company delivering security, cloud, infrastructure and digital transformation solutions for modern businesses.",
   icons: {
     icon: [
       {
