@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState } from "react";
@@ -29,36 +30,65 @@ export default function Contact() {
   });
 
   const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState("");
 
   const handleChange = (e) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
     });
+
     setSubmitted(false);
+    setError("");
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const subject = encodeURIComponent(
-      `AXISCORE Inquiry - ${formData.service || "General Inquiry"}`
-    );
+    if (isSubmitting) return;
 
-    const body = encodeURIComponent(
-      `Name: ${formData.name}
-Email: ${formData.email}
-Company: ${formData.company}
-Service: ${formData.service}
+    setIsSubmitting(true);
+    setSubmitted(false);
+    setError("");
 
-Project Details:
-${formData.message}`
-    );
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
 
-    window.location.href =
-      `mailto:hello@axiscore.com?subject=${subject}&body=${body}`;
+      const result = await response.json();
 
-    setSubmitted(true);
+      if (!response.ok || !result.success) {
+        throw new Error(
+          result.message || "Failed to send your inquiry."
+        );
+      }
+
+      setSubmitted(true);
+
+      setFormData({
+        name: "",
+        email: "",
+        company: "",
+        service: "",
+        message: "",
+      });
+
+    } catch (err) {
+      console.error("Contact form error:", err);
+
+      setError(
+        err.message || "Something went wrong. Please try again."
+      );
+
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -208,7 +238,7 @@ ${formData.message}`
               <div>
                 <span>Email Us</span>
                 <a href="mailto:hello@axiscore.com">
-                  hello@axiscore.com
+                 axiscore546@gmail.com
                 </a>
               </div>
 
@@ -304,6 +334,7 @@ ${formData.message}`
                     placeholder="Enter your full name"
                     value={formData.name}
                     onChange={handleChange}
+                    maxLength={100}
                     required
                   />
                 </div>
@@ -319,6 +350,7 @@ ${formData.message}`
                     placeholder="you@company.com"
                     value={formData.email}
                     onChange={handleChange}
+                    maxLength={254}
                     required
                   />
                 </div>
@@ -339,6 +371,7 @@ ${formData.message}`
                     placeholder="Your company name"
                     value={formData.company}
                     onChange={handleChange}
+                    maxLength={150}
                   />
                 </div>
               </div>
@@ -384,23 +417,45 @@ ${formData.message}`
                   placeholder="Tell us about your project, security requirements or challenges..."
                   value={formData.message}
                   onChange={handleChange}
+                  maxLength={5000}
                   required
                 ></textarea>
               </div>
 
 
-              <button type="submit" className="contact-submit">
+              <button
+                type="submit"
+                className="contact-submit"
+                disabled={isSubmitting}
+              >
 
-                <span>Submit Secure Inquiry</span>
-                <Send size={18} />
+                <span>
+                  {isSubmitting
+                    ? "Sending..."
+                    : "Submit Secure Inquiry"}
+                </span>
+
+                {isSubmitting ? (
+                  <Activity size={18} />
+                ) : (
+                  <Send size={18} />
+                )}
 
               </button>
 
 
+              {/* SUCCESS MESSAGE */}
               {submitted && (
-                <p className="form-success">
+                <p className="form-success" role="status">
                   <CheckCircle2 size={17} />
-                  Your email application should open with your inquiry.
+                  Your inquiry has been sent successfully!
+                </p>
+              )}
+
+              {/* ERROR MESSAGE */}
+              {error && (
+                <p className="form-error" role="alert">
+                  {error}
                 </p>
               )}
 
